@@ -1,0 +1,165 @@
+@import "core/typography.scss";
+@import "core/utility.scss";
+@import "core/scaffold.scss";
+
+:root {
+  font-family: Raleway, system-ui, sans-serif;
+  --slide-bg: white;
+  --brand-color: #f60;
+}
+
+p-deck::after {
+  position: fixed;
+  bottom: .5em;
+  left: 0;
+  right: 0;
+  font-size: 50%;
+  text-align: center;
+  content: '@MaxArt2501';
+  color: #001236;
+  z-index: 100;
+}
+
+.cover {
+  padding: 0;
+
+  &-top {
+    background-color: var(--brand-color);
+    border-bottom: .08em solid white;
+    height: 50%;
+    color: white;
+    font-size: 50%;
+    padding: 3% 6%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: system-ui, sans-serif;
+
+    > * {
+      margin: 0;
+      font-weight: normal;
+      filter: drop-shadow(0 0 .025em #000);
+    }
+    h1 {
+      font-size: 2.5em;
+      line-height: 1;
+    }
+    small {
+      display: block;
+    }
+  }
+  &-bottom {
+    border-top: .08em solid white;
+    background-color: #001236;
+    height: 50%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;;
+    padding: 3% 6%;
+
+    img:first-child {
+      width: 18em;
+    }
+    img:last-child {
+      width: 2.5em;
+    }
+  }
+  &-location {
+    display: flex;
+    justify-content: space-between;
+
+    img {
+      height: 2em;
+    }
+  }
+
+  &.cssday {
+    --slide-bg: var(--brand-color);
+    background-color: var(--slide-bg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 133vmin, auto;
+    background-image: url('../img/logo-antreem-contour.svg'), paint(delaunay);
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 .25em black;
+
+    small { display: block; }
+
+    img {
+      background: white;
+      padding: .2em;
+      border-radius: .5em;
+      height: 5em;
+    }
+  }
+}
+
+.js-heading {
+  background: #f7df1e;
+  color: black;
+  text-align: center;
+  font-weight: bold;
+  padding: .35em;
+}
+
+.our-header {
+  border-left: var(--brand-color) solid .15em;
+  padding: .5em;
+  margin: 0 0 .5em;
+}
+
+.links {
+  font-size: 75%;
+  align-self: center;
+
+  li {
+    margin-top: .5em;
+  }
+  a {
+    display: block;
+    width: fit-content;
+    padding-left: 1.75em;
+  }
+}
+
+.antreem-logo {
+  position: absolute;
+  height: 12em;
+  right: 0;
+  bottom: -4em;
+}
+.my-data {
+  > h2 {
+    margin-bottom: 0;
+  }
+  a {
+    color: var(--brand-color);
+  }
+}
+.my-face {
+  border: .1em solid var(--brand-color);
+  border-radius: 50%;
+  height: 6em;
+  float: left;
+  margin: 0 1em;
+}
+.my-info {
+  width: 8em;
+  text-align: center;
+  margin: 2em 2em 0;
+  img {
+    height: 1em;
+    vertical-align: middle;
+  }
+}
+.final-link {
+  a {
+    color: var(--brand-color);
+  }
+  img {
+    display: block;
+    margin: 1em auto 0;
+    height: 7em;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "web-components-talk",
+  "version": "0.0.1",
+  "description": "The bright future of Web Components",
+  "scripts": {
+    "build": "gulp",
+    "clean": "gulp clean",
+    "serve": "gulp serve",
+    "gh-pages": "gulp publish"
+  },
+  "keywords": [
+    "presentation",
+    "webcomponents"
+  ],
+  "author": {
+    "name": "Massimo Artizzu",
+    "email": "maxart.x@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "p-slides": "^0.1.0",
+    "prismjs": "^1.16.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.5",
+    "gh-pages": "^2.0.1",
+    "gulp": "^4.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-tap": "^1.0.1",
+    "rimraf": "^2.6.2"
+  }
+}

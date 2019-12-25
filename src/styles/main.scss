@@ -1,0 +1,29 @@
+@import "core/props.scss";
+@import "core/deck.scss";
+@import "core/nav.scss";
+@import "core/toolbar.scss";
+@import "core/progress.scss";
+
+:root {
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.presentation-toolbar,
+.presentation-nav {
+  button {
+    border: none;
+    border-radius: 0;
+    background: none;
+    padding: 0;
+    margin: .25em;
+    cursor: pointer;
+    width: 1em;
+    height: 1em;
+    font-size: 3rem;
+    color: var(--controls-color);
+  }
+}
