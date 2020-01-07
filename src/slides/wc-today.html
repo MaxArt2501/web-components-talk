@@ -1,0 +1,96 @@
+<p-slide>
+  <h1>
+    So&hellip;<br>
+    <p-fragment>
+      Web Components.
+    </p-fragment>
+  </h1>
+</p-slide>
+<p-slide>
+  <h1 class="center">Let's be honest</h1>
+  <ul class="self-center">
+    <li><p-fragment>👎 awkward API</p-fragment></li>
+    <li><p-fragment>👎 only with JS</p-fragment></li>
+    <li><p-fragment>👎 hard to style</p-fragment></li>
+    <li><p-fragment>👎 bad for accessibility</p-fragment></li>
+    <li><p-fragment>👎 bad for SEO</p-fragment></li>
+    <li><p-fragment>👎 global naming</p-fragment></li>
+  </ul>
+</p-slide>
+<p-slide>
+  <pre class="self-center language-javascript"><code>class MyBox</code> <p-fragment><code>extends HTMLElement</code></p-fragment> {
+  <p-fragment><code>constructor() {
+    super();
+    // ...
+  }</code></p-fragment>
+  <p-fragment><code>connectedCallback() {}
+  disconnectedCallback() {}
+  attributeChangedCallback() {}
+  adoptedCallback() {}</code></p-fragment>
+  <p-fragment><code>static get observedAttributes() {
+    return ['foo'];
+  }</code></p-fragment>
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h2 class="our-header">We <em>need</em> JS</h2>
+  <p>Even though Google now runs Chromium</p>
+</p-slide>
+<p-slide>
+  <div class="two-columns">
+    <div>
+      <p-fragment>
+        <pre class="language-css"><code>my-box >>> div {
+  background-color: red;
+}</code></pre>
+      </p-fragment>
+      <p-fragment>
+        <pre class="language-css"><code>:root {
+  --my-mixin: {
+    background-color: red;
+  }
+}
+:host > div {
+  @apply --my-mixin;
+}</code></pre>
+      </p-fragment>
+    </div>
+    <div>
+      <p-fragment>
+        <pre class="language-js"><code>constructor() {
+ this.attachShadow({mode:'open'})
+ this.shadowRoot.innerHTML =
+  '&lt;style>:host { ... }&lt;/style>'
+
+ // or...
+ const linkEl = document
+  .createElement('link')
+ linkEl.href = 'style.css'
+ linkEl.rel = 'stylesheet'
+ this.shadowRoot
+  .appendChild(linkeEl)
+}</code></pre>
+      </p-fragment>
+    </div>
+  </div>
+</p-slide>
+<p-slide class="center">
+  <h1>&ldquo;I'll just stick to React!&rdquo;</h1>
+  <p-fragment>
+    <h4>(Angular)</h4>
+  </p-fragment>
+  <p-fragment>
+    <h4>(Vue)</h4>
+  </p-fragment>
+  <p-fragment>
+    <h4>(Ember)</h4>
+  </p-fragment>
+  <p-fragment>
+    <h4>(jQuery)</h4>
+  </p-fragment>
+</p-slide>
+<!--
+<svg viewBox="0 0 10 10" preserveAspectRatio="none">
+  <path d="M1,1L9,9M9,1L1,9" vector-effect="non-scaling-stroke"
+        fill="none" stroke="black" stroke-width="40" stroke-linecap="round"/>
+</svg>-->
