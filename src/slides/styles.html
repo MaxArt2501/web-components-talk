@@ -1,0 +1,87 @@
+<p-slide>
+  <h1 class="our-header">
+    The problem with styles
+    <p-fragment>
+      <small>(and Shadow DOM)</small>
+    </p-fragment>
+  </h1>
+</p-slide>
+<p-slide>
+  <ul class="self-center">
+    <li><p-fragment>👉 can't style from outside</p-fragment></li>
+    <li><p-fragment>👉 low level API</p-fragment></li>
+    <li><p-fragment>👉 FOUCs</p-fragment></li>
+  </ul>
+</p-slide>
+<p-slide class="center">
+  <h2>The <code aria-label="deep operator">>>></code> operator&hellip;</h2>
+  <p-fragment class="self-center">
+    <pre class="big language-css"><code>my-form.no-btn >>> button {
+  display: none;
+}</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <p>&hellip; would defeat the purpose of style encapsulation</p>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <h4 class="center">Only this works&hellip;</h4>
+  <div class="self-center">
+    <pre class="language-html big"><code>&lt;my-component style="--my-color: blue">&lt;/my-component></code></pre>
+    <pre class="language-css big"><code>/* my-component.css */
+:host > div {
+  background-color: var(--my-color);
+}</code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h4 class="center">A great idea!</h4>
+  <pre class="language-css self-center"><code>/* styles.css */
+:root {
+  --my-mixin: {
+    background-color: red;
+    color: white;
+  }
+}
+/* my-component.css */
+:host > div {
+  @apply(--my-mixin);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h4 class="center">&hellip; but what does <em>this</em> even mean?</h4>
+  <pre class="language-css self-center"><code>:root {
+  --my-color: red;
+  --my-mixin: {
+    background-color: var(--my-color);
+  }
+}
+.a-test {
+  --my-color: green;
+  @apply(--my-mixin);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">CSS Shadow Parts</h4>
+  <div class="self-center">
+    <pre class="language-html"><code>#shadow-root
+  &lt;header part="box-header">...&lt;/header>
+  &lt;div part="box-content">...&lt;/div></code></pre>
+    <pre class="language-css"><code>/* styles.css */
+::part(box-header) {
+  font: bold 2em system-ui, sans-serif;
+}</code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h4>Part forwarding</h4>
+  <div class="self-center">
+    <pre class="language-html"><code>#shadow-root (inner-box)
+  &lt;hr>
+  &lt;section part="inner-content">...&lt;/section>
+  &lt;hr></code></pre>
+    <pre class="language-html"><code>#shadow-root (outer-box)
+  &lt;header part="outer-header">...&lt;/header>
+  &lt;inner-box part="inner-content => outer-content">...&lt;/inner-box></code></pre>
+  </div>
+</p-slide>
