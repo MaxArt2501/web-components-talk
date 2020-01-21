@@ -67,10 +67,12 @@
     <pre class="language-html"><code>#shadow-root
   &lt;header part="box-header">...&lt;/header>
   &lt;div part="box-content">...&lt;/div></code></pre>
-    <pre class="language-css"><code>/* styles.css */
+    <p-fragment>
+      <pre class="language-css"><code>/* styles.css */
 ::part(box-header) {
   font: bold 2em system-ui, sans-serif;
 }</code></pre>
+    </p-fragment>
   </div>
 </p-slide>
 <p-slide>
@@ -84,4 +86,7 @@
   &lt;header part="outer-header">...&lt;/header>
   &lt;inner-box part="inner-content => outer-content">...&lt;/inner-box></code></pre>
   </div>
+</p-slide>
+<p-slide>
+  <support-table chrome="73" firefox="72" safari="">Shadow Parts</support-table>
 </p-slide>
