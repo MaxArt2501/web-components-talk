@@ -90,3 +90,44 @@
 <p-slide>
   <support-table chrome="73" firefox="72" safari="">Shadow Parts</support-table>
 </p-slide>
+<p-slide>
+  <h1 class="center">&ldquo;Loading .css files is a pain!&rdquo;</h1>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>constructor() {
+  ...
+  const styleEl = document.createElement('style');
+  styleEl.textContent = 'div { color: red; }';
+  this.shadowRoot.appendChild(styleEl);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>constructor() {
+  ...
+  const linkEl = document.createElement('link');
+  linkEl.rel = 'stylesheet';
+  linkEl.href = 'component.css';
+  this.shadowRoot.appendChild(linkEl);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h2 class="center">A new way to apply styles</h2>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>const styles = new CSSStyleSheet();
+styles.replaceSync('div { color: red; }');
+
+// Or asynchronously, we can use @import
+styles.replace('@import "/foo.css"')
+  .then(sheet => { ... });</code></pre>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>import { styles } from './styles.js';
+
+class MyComponent extends HTMLElement {
+  constructor() {
+    ...
+    this.shadowRoot.adoptedStyleSheets = [ styles ];
+  }
+}</code></pre>
+</p-slide>
