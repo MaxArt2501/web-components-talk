@@ -171,6 +171,7 @@ p-deck::after {
   margin: 0 auto;
   border: .123em solid lightskyblue;
   border-spacing: .125em;
+  font-size: 200%;
 }
 ::part(support-caption) {
   background-color: lightskyblue;
@@ -186,6 +187,7 @@ p-deck::after {
   min-width: 2em;
   text-align: center;
   border-radius: .15em;
+  height: 1em;
 }
 ::part(ok) {
   background-color: #c7f0c1;
