@@ -131,3 +131,71 @@ class MyComponent extends HTMLElement {
   }
 }</code></pre>
 </p-slide>
+<p-slide>
+  <h4 class="our-header">&hellip;The heck is <code>.adoptedStyleSheets</code>?</h4>
+  <p-fragment class="self-center">
+    <p-fragment><em>Frozen</em></p-fragment>
+    <code>Array</code>
+  </p-fragment>
+  <p-fragment class="self-center">
+    <small>as in <code>Object.freeze</code></small>
+  </p-fragment>
+</p-slide>
+<p-slide class="center">
+  <div class="two-columns align-center">
+    <div>
+      <img src="img/drake-bad.webp" alt="Drake 'bad' meme" style="width: 7em">
+    </div>
+    <pre class="language-js"><code>document
+  .adoptedStyleSheets
+  .push(sheet);</code></pre>
+  </div>
+  <p-fragment>
+    <div class="two-columns align-center">
+      <div>
+        <img src="img/drake-good.webp" alt="Drake 'bad' meme" style="width: 7em">
+      </div>
+      <pre class="language-js"><code>document.adoptedStyleSheets = [
+  ...document.adoptedStyleSheets,
+  sheet
+];</code></pre>
+    </div>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <support-table chrome="73" firefox="" safari="">Constructable Stylesheets</support-table>
+</p-slide>
+<p-slide>
+  <h1 class="center">&ldquo;Better, but&hellip;&rdquo;</h1>
+</p-slide>
+<p-slide>
+  <h1 class="center">CSS Modules</h1>
+  <p-fragment><h4 class="center">
+    (No, not <em>those</em> <a href="https://github.com/css-modules/css-modules">CSS Modules</a>&hellip;
+  </h4></p-fragment>
+</p-slide>
+<p-slide>
+  <h3 class="our-header"><em>These</em> CSS Modules&hellip;</h3>
+  <p-fragment class="self-center">
+    <pre class="language-js big"><code>import sheet from './styles.css';</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <p class="center"><code>sheet</code> is a <code>CSSStyleSheet</code></p>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>import sheet from './styles.css';
+
+class MyComponent extends HTMLElement {
+  constructor() {
+    ...
+    this.shadowRoot.adoptedStyleSheets = [ sheet ];
+  }
+}</code></pre>
+</p-slide>
+<p-slide>
+  <support-table chrome="" firefox="" safari="">CSS Modules</support-table>
+  <a href="https://github.com/w3c/webcomponents/issues/759" class="center">
+    github.com/w3c/webcomponents/issues/759
+  </a>
+</p-slide>
