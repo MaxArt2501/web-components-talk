@@ -164,40 +164,43 @@ p-deck::after {
   }
 }
 
-::part(support-frame) {
-  background-color: #e7f5fe;
-  padding-top: .125em;
-  border-radius: 0 0 .25em .25em;
-  margin: 0 auto;
-  border: .123em solid lightskyblue;
-  border-spacing: .125em;
-  font-size: 200%;
-}
-::part(support-caption) {
-  background-color: lightskyblue;
-  border-radius: .333em .333em 0 0;
-  font-size: 75%;
-}
-::part(support-icon) {
-  height: .75em;
-}
-::part(support-value) {
-  background-color: white;
-  padding: .1em;
-  min-width: 2em;
-  text-align: center;
-  border-radius: .15em;
-  height: 1em;
-}
-::part(ok) {
-  background-color: #c7f0c1;
-}
-::part(ko) {
-  background-color: #f0c1c1;
-  background-image: linear-gradient(to bottom right, rgba(230, 100, 101, 0.2) 0, rgba(230, 100, 101, 0.2) 1px, transparent 1px, transparent 67px, rgba(230, 100, 101, 0.2) 67px, rgba(230, 100, 101, 0.2) 73px, transparent 73px, transparent 138px, rgba(230, 100, 101, 0.2) 138px, rgba(230, 100, 101, 0.2) 144px, transparent 144px), linear-gradient(to bottom left, rgba(230, 100, 101, 0.2) 0, rgba(230, 100, 101, 0.2) 1px, transparent 1px, transparent 67px, rgba(230, 100, 101, 0.2) 67px, rgba(230, 100, 101, 0.2) 73px, transparent 73px, transparent 138px, rgba(230, 100, 101, 0.2) 138px, rgba(230, 100, 101, 0.2) 144px, transparent 144px);
-  background-size: 100px 100px,100px 100px;
-  background-position: 50% 50%,50% 50%;
-  background-repeat: no-repeat;
+support-table {
+  &::part(frame) {
+    background-color: #e7f5fe;
+    padding-top: .125em;
+    border-radius: 0 0 .25em .25em;
+    margin: 0 auto;
+    border: .123em solid lightskyblue;
+    border-spacing: .125em;
+    font-size: 200%;
+  }
+  &::part(caption) {
+    background-color: lightskyblue;
+    border-radius: .333em .333em 0 0;
+    font-size: 75%;
+  }
+  &::part(icon) {
+    height: .75em;
+  }
+  &::part(value) {
+    background-color: white;
+    padding: .1em;
+    min-width: 2em;
+    text-align: center;
+    border-radius: .15em;
+    height: 1em;
+
+  }
+  &::part(ok) {
+    background-color: #c7f0c1;
+  }
+  &::part(ko) {
+    background-color: #f0c1c1;
+    background-image: linear-gradient(to bottom right, rgba(230, 100, 101, .75) 0, rgba(230, 100, 101, .75) 1px, transparent 1px, transparent 67px, rgba(230, 100, 101, .75) 67px, rgba(230, 100, 101, .75) 73px, transparent 73px, transparent 138px, rgba(230, 100, 101, .75) 138px, rgba(230, 100, 101, .75) 144px, transparent 144px), linear-gradient(to bottom left, rgba(230, 100, 101, .75) 0, rgba(230, 100, 101, .75) 1px, transparent 1px, transparent 67px, rgba(230, 100, 101, .75) 67px, rgba(230, 100, 101, .75) 73px, transparent 73px, transparent 138px, rgba(230, 100, 101, .75) 138px, rgba(230, 100, 101, .75) 144px, transparent 144px);
+    background-size: 100px 100px,100px 100px;
+    background-position: 50% 50%,50% 50%;
+    background-repeat: no-repeat;
+  }
 }
 
 .covering {
