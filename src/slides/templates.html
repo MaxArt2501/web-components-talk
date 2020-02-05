@@ -29,3 +29,64 @@
     <pre class="language-js big"><code>import templateDoc from './template.html';</code></pre>
   </p-fragment>
 </p-slide>
+<p-slide>
+  <h4 class="our-header">A simple case</h4>
+  <div class="self-center">
+    module.html
+    <pre class="language-html"><code>&lt;blockquote>
+  640K is more memory than anyone will ever need.
+&lt;/blockquote></code></pre>
+    <p-fragment>
+      main.js
+      <pre class="language-js"><code>import quoteDoc from './module.html';
+console.log(quoteDoc.constructor.name); // HTMLDocument</code></pre>
+    </p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <p-notes>This works in IE10 too</p-notes>
+  <h3 class="center">How is that better than this?</h3>
+  <pre class="language-js big self-center"><code>const xhr = new XMLHttpRequest();
+xhr.responseType = 'document';
+xhr.open('GET', './module.html');
+xhr.send();
+xhr.onload = () => console.log(xhr.response);</code></pre>
+</p-slide>
+<p-slide>
+  <h1 class="center">
+    HTML Modules are
+    <p-fragment><em>not</em> inert!</p-fragment>
+  </h1>
+</p-slide>
+<p-slide>
+  <p-notes>But only those of <code>type="module"</code></p-notes>
+  <h3 class="center">
+    <code>script</code>s are executed
+  </h3>
+  <p-fragment class="self-center relative">
+    module.html
+    <pre class="language-html"><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template>
+&lt;script type="module"></code><code class="language-js">
+  const doc = import.meta.document;
+  export const content = doc.querySelector('template').content;
+</code><code class="language-html">&lt;/script></code></pre>
+    main.js
+    <pre class="language-js"><code>import { content } from './module.html';</code></pre>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="language-html self-center"><p-fragment><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template></p-fragment>
+&lt;script type="module"></code><code class="language-js">
+  import sheet from './today-date.css';
+  const doc = import.meta.document;
+  export class TodayDate extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoow.adoptedStyleSheets = [ sheet ];
+      this.shadowRoot.appendChild(
+        doc.querySelector('template').content.cloneNode(true)
+      );
+    }
+  }</code><code class="language-html">&lt;/script></code></pre>
+</p-slide>
