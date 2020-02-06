@@ -75,11 +75,11 @@ xhr.onload = () => console.log(xhr.response);</code></pre>
   </p-fragment>
 </p-slide>
 <p-slide>
-  <pre class="language-html self-center"><p-fragment><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template></p-fragment>
-&lt;script type="module"></code><code class="language-js">
-  import sheet from './today-date.css';
-  const doc = import.meta.document;
-  export class TodayDate extends HTMLElement {
+  <pre class="language-html self-center"><p-fragment><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template></code></p-fragment>
+<p-fragment><code class="language-html">&lt;script type="module"></code>
+  <p-fragment><code class="language-js">import sheet from './today-date.css';</code></p-fragment>
+  <p-fragment><code class="language-js">const doc = import.meta.document;</code></p-fragment>
+  <p-fragment><code class="language-js">export class TodayDate extends HTMLElement {
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
@@ -88,5 +88,6 @@ xhr.onload = () => console.log(xhr.response);</code></pre>
         doc.querySelector('template').content.cloneNode(true)
       );
     }
-  }</code><code class="language-html">&lt;/script></code></pre>
+  }</code></p-fragment>
+<code class="language-html">&lt;/script></code></p-fragment></pre>
 </p-slide>
