@@ -91,3 +91,34 @@ xhr.onload = () => console.log(xhr.response);</code></pre>
   }</code></p-fragment>
 <code class="language-html">&lt;/script></code></p-fragment></pre>
 </p-slide>
+<p-slide>
+  <h4 class="our-header">Even cooler: scriptless exports?</h4>
+  <pre class="self-center"><code class="language-html">&lt;!-- module.html -->
+&lt;template namedexport="content">
+  I'm exported without JS!</code>
+  <p-fragment><code class="language-html">&lt;content import="submodule.html" namedimport="part">&lt;/content></code></p-fragment>
+<code class="language-html">&lt;/template></code>
+
+<code class="language-js">// main.js
+import { content } from './module.html';</code></pre>
+</p-slide>
+<p-slide class="center">
+  <h3>There's still ugliness!</h3>
+  <p-fragment>
+    <p>What about templates?</p>
+  </p-fragment>
+</p-slide>
+<p-slide class="center">
+  <h3>We have&hellip; <code>&lt;template></code>s</h3>
+  <div class="self-center">
+    <pre><code class="language-html">&lt;template>
+  Today is &lt;time>&lt;/time>
+&lt;/template>
+
+&lt;script></code><code class="language-js">
+  const { content } = document.querySelector('template');
+  const copy = content.cloneNode(true);
+  copy.querySelector('time').textContent = new Date();</code>
+<code class="language-html">&lt;/script></code></pre>
+  </div>
+</p-slide>
