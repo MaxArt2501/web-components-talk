@@ -110,6 +110,14 @@ import { content } from './module.html';</code></pre>
 </p-slide>
 <p-slide class="center">
   <h3>We have&hellip; <code>&lt;template></code>s</h3>
+  <p-fragment>
+    <h1 class="uppercase center">BUT&hellip;</h1>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <h1 class="center"><code>&lt;template></code>s are <em>static</em></h1>
+</p-slide>
+<p-slide>
   <div class="self-center">
     <pre><code class="language-html">&lt;template>
   Today is &lt;time>&lt;/time>
@@ -120,5 +128,80 @@ import { content } from './module.html';</code></pre>
   const copy = content.cloneNode(true);
   copy.querySelector('time').textContent = new Date();</code>
 <code class="language-html">&lt;/script></code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h1 class="center">Is <em>this</em> what we're given? 😭</h1>
+</p-slide>
+<p-slide>
+  <div class="two-columns">
+    <aside class="center">
+      <img src="img/react.svg" alt="React logo" style="height: 2em;">
+      <pre><code class="language-js">function MyDate() {
+  return </code><code class="language-html">&lt;div>
+    Today is
+    &lt;time></code><code class="language-js">{ new Date() }</code><code class="language-html">&lt;/time>
+  &lt;/div></code><code class="language-js">;
+}</code></pre>
+    </aside>
+    <aside class="center">
+      <img src="img/angular.svg" alt="Angular logo" style="height: 2em;">
+      <pre><code class="language-js">@Component({
+  selector: 'my-date',
+  template: `</code><code class="language-html">Today is
+    &lt;time>{{ date }}&lt;/time></code><code class="language-js">`
+})
+class MyDate { date = new Date }</code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h2 class="center">Community to the rescue 🙌</h2>
+</p-slide>
+<p-slide>
+  <p-notes>lit-html is by Justin Fagnani, from Google.
+    They know templates aren't up to the task!</p-notes>
+  <div class="self-center">
+    <p><a href="https://lit-html.polymer-project.org/">lit-html</a></p>
+    <pre class="big"><code class="language-js">import { html } from 'lit-html';
+function MyDate() {
+  return html`</code><code class="language-html">&lt;div>
+    Today is
+    &lt;time></code>$<code class="language-js">{ new Date() }</code><code class="language-html">&lt;/time>
+  &lt;/div></code><code class="language-js">`;
+}</code></pre>
+  </div>
+  <p class="center"><small>
+    Notable alternatives:
+    <a href="https://github.com/WebReflection/hyperHTML">hyperHTML</a>,
+    <a href="https://github.com/choojs/nanohtml">nanohtml</a>
+  </small></p>
+</p-slide>
+<p-slide>
+  <h1 class="center">
+    Hold up! ✋<br>
+    There's something!
+  </h1>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">
+    <a href="https://github.com/w3c/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md">
+      Template Instantiation
+    </a>
+  </h4>
+  <div class="two-columns">
+    <pre><code class="language-html">&lt;template>
+  Today is
+  &lt;time datetime="{{ iso }}">
+    {{ date }}
+  &lt;/time>
+&lt;/template></code></pre>
+    <p-fragment>
+      <pre><code class="language-js">const date = new Date();
+const instance =
+  template.createInstance({
+    date: date.toString(),
+    iso: date.toISOString()
+  });</code></pre>
+    </p-fragment>
   </div>
 </p-slide>
