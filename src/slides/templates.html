@@ -205,3 +205,27 @@ const instance =
     </p-fragment>
   </div>
 </p-slide>
+<p-slide>
+  <h1 class="center">
+    &hellip; but it'll have to wait
+    <br><br>
+    🤷‍♀️
+  </h1>
+  <p-notes>
+    Because introducing a Mustache-like syntax would be too hazardous
+  </p-notes>
+</p-slide>
+<p-slide>
+  <h2 class="our-header">A
+    <a href="https://github.com/w3c/webcomponents/blob/gh-pages/proposals/DOM-Parts.md">
+      brand new proposal
+    </a>
+  </h2>
+  <pre class="self-center"><code class="language-html">&lt;p>Today is &lt;time>&lt;/time>&lt;/p></code>
+
+<p-fragment><code class="language-js">const todayPart = new ChildNodePart(timeEl);</code></p-fragment>
+<p-fragment><code class="language-js">todayPart.value = new Date().toDateString();</code></p-fragment>
+<p-fragment><code class="language-js">todayPart.commit();</code></p-fragment>
+
+<p-fragment><code class="language-html">&lt;p>Today is &lt;time>Wed Nov 25 2020&lt;/time>&lt;/p></code></p-fragment></pre>
+</p-slide>
