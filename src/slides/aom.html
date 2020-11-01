@@ -4,3 +4,58 @@
 <p-slide>
   <img class="full-media" src="img/wait-its-all-divs.webp" alt="Meme of the two astronauts, looking at some HTML code, the first saying 'Wait, it's all divs?', the other replying 'Always has been'">
 </p-slide>
+<p-slide>
+  <h3 class="our-header" ari>Accessible Object Model (AOM)</h3>
+  <p-fragment class="self-center">
+    <pre class="big"><code class="language-js">element.ariaLabel = 'This is the result';
+element.ariaLive = 'polite';</code>
+
+<p-fragment><code class="language-html">&lt;output aria-label="This is the result"
+  aria-live="polite">...&lt;/output></code></p-fragment></pre>
+  </p-fragment>
+  <p-fragment class="landing" style="bottom: 5%; right: 5%">
+    <img src="img/ie.svg" alt="Internet Explorer logo" style="height: 7em; transform: rotate(-20deg);">
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="big language-js"><code class="language-js">class AlertModal extends HTMLElement {
+  role = 'alertdialog';
+  ariaExpandend = false;</code><div
+  style="position: relative;"><code class="language-js" style="white-space: pre;">  constructor() {
+    super();
+    this.setAttribute('role', 'alertdialog');
+    this.setAttribute('aria-expanded', 'false');
+  }</code><p-fragment><svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment></div>}</code></pre>
+</p-slide>
+<p-slide>
+  <pre class="big self-center"><code class="language-js">element.ariaDescribedBy = 'boxTitle';</code>
+<p-fragment><code class="language-js">// ... implies
+element.ariaDescribedByElements = [
+  boxTitleElement
+];</code></p-fragment></pre>
+  <p-notes>Let's see why it's so important for Web Components</p-notes>
+</p-slide>
+<p-slide>
+  <div class="self-center">
+    <pre><code class="language-html">&lt;!-- custom-combobox Shadow DOM -->
+&lt;input aria-owns="optList" aria-activedescendant="opt1">
+&lt;slot>&lt;/slot>
+
+&lt;custom-combobox>
+  &lt;custom-optionlist id="optList">
+    &lt;custom-option id="opt1">Option 1&lt;/custom-option>
+    ...
+  &lt;/custom-optionlist>
+&lt;/custom-combobox></code></pre>
+<p-fragment><svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <pre class="self-center"><code class="language-js">connectedCallback() {
+  const root = this.shadowRoot;
+  const input = root.querySelector('input');
+  const list = root.querySelector('custom-optionlist');
+  input.ariaOwns = [ list ];
+  input.ariaActiveDescendantElement = list.firstChild;
+}</code></pre>
+</p-slide>
