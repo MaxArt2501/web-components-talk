@@ -5,7 +5,166 @@
   <img class="full-media" src="img/wait-its-all-divs.webp" alt="Meme of the two astronauts, looking at some HTML code, the first saying 'Wait, it's all divs?', the other replying 'Always has been'">
 </p-slide>
 <p-slide>
-  <h3 class="our-header" ari>Accessible Object Model (AOM)</h3>
+  <h2 class="center">We have <code>role</code>, <code>aria-*</code>&hellip;</h2>
+  <p-fragment><h1 class="center">What else?</h1></p-fragment>
+</p-slide>
+<p-slide class="center uppercase">
+  <h2 class="meme-text" style="top: -2em">Doing things right&hellip;</h2>
+  <video src="img/difficult.webm" autoplay loop class="full-media"></video>
+  <h1 class="meme-text" style="top: 1.5em">&hellip; is hard!</h1>
+</p-slide>
+<p-slide>
+  <pre style="font-size: .2em; columns: 3"><code class="language-css">better-button {
+  box-sizing: border-box;
+  min-width: 5.14em;
+  margin: 0 0.29em;
+  font: inherit;
+  text-transform: uppercase;
+  outline-width: 0;
+  border-radius: 3px;
+  user-select: none;
+  cursor: pointer;
+  padding: 0.7em 0.57em;
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  contain: content;
+}
+better-button[raised]:not([disabled]),
+better-button:not([disabled]):hover {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12),
+              0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+better-button[disabled] {
+  background: #eaeaea;
+  color: #a8a8a8;
+  cursor: auto;
+  pointer-events: none;
+  box-shadow: none;
+}
+better-button:not([disabled]):focus {
+  font-weight: 500;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+              0 1px 18px 0 rgba(0, 0, 0, 0.12),
+              0 3px 5px -1px rgba(0, 0, 0, 0.4);
+}
+better-button .ripple {
+  position: absolute;
+  transform: scale3d(0,0,0);
+  opacity: 0.6;
+  transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  will-change: opacity, transform;
+  pointer-events: none;
+  z-index: -1;
+}
+better-button .ripple.run {
+  opacity: 0;
+  transform: none;
+}
+better-button:not(:defined) { color: red; }</code>
+
+<code class="language-js">class BetterButton extends HTMLElement {
+  static get observedAttributes() {
+    return ['disabled'];
+  }
+
+  get disabled() {
+    return this.hasAttribute('disabled');
+  }
+
+  set disabled(val) {
+    if (val) {
+      this.setAttribute('disabled', '');
+    } else {
+      this.removeAttribute('disabled');
+    }
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('keydown', e => {
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        this.dispatchEvent(new MouseEvent('click',
+          { bubbles: true, cancelable: true }));
+      }
+    });
+
+    this.addEventListener('click', e => {
+      if (this.disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      this.drawRipple(e.offsetX, e.offsetY);
+    });
+  }
+
+  connectedCallback() {
+    this.setAttribute('role', 'button');
+    this.setAttribute('tabindex', '0');
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (this.disabled) {
+      this.setAttribute('tabindex', '-1');
+      this.setAttribute('aria-disabled', 'true');
+    } else {
+      this.setAttribute('tabindex', '0');
+      this.setAttribute('aria-disabled', 'false');
+    }
+  }
+
+  drawRipple(x, y) {
+    let div = document.createElement('div');
+    div.classList.add('ripple');
+    this.appendChild(div);
+    div.style.top = `${y - div.clientHeight/2}px`;
+    div.style.left = `${x - div.clientWidth/2}px`;
+    div.style.backgroundColor = window
+      .getComputedStyle(this).color;
+    div.classList.add('run');
+    div.addEventListener('transitionend', e => div.remove());
+  }
+}
+window.customElements.define('better-button', BetterButton);</code></pre>
+</p-slide>
+<p-slide>
+  <h2 class="our-header">Extending built-in elements</h2>
+  <p-fragment>
+    <pre><code class="language-js">class MyButton extends HTMLButtonElement {&hellip;}</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <pre><code class="language-js">customElements.define('my-button', MyButton, { extends: 'button' });</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <pre><code class="language-html">&lt;button is="my-button">&hellip;&lt;/button></code></pre>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <support-table chrome="66" firefox="63" safari>Customized built-in element support</support-table>
+</p-slide>
+<p-slide>
+  <h4 class="center">&hellip; so.<br>WebKit.</h4>
+  <img style="width: 20em;" src="img/rniwa-is.webp" alt="Excerpt of a comment by NIWA, Ryosuke:
+  I'll note that we've vocally and repeatedly objected to having is=, and in fact, stated
+  publicly that we won't implement this feature">
+  <a href="https://github.com/w3c/webcomponents/issues/509" class="center">github.com/w3c/webcomponents/issues/509</a>
+</p-slide>
+<p-slide>
+  <img style="width: 20em;" src="img/rniwa-extends.webp" alt="Excerpt of a comment by NIWA, Ryosuke:
+  We won't be supporting extends either.
+  One fundamental problem is that subclassing a subclass of HTMLInputElement or HTMLImageElement
+  often leads to a violation of the Liskov substitution principle over time...
+  ... we don't have any hooks for the processing models and internal states of builtin elements...
+  Finally, the whole design of is= is a hack, and it would harm the long term health of the Web platform.">
+  <p-fragment><img src="img/emergency-meeting.webp" alt="Among Us' 'emergency meeting' banner" class="full-media"></p-fragment>
+</p-slide>
+<p-slide>
+  <h3 class="our-header">Accessible Object Model (AOM)</h3>
   <p-fragment class="self-center">
     <pre class="big"><code class="language-js">element.ariaLabel = 'This is the result';
 element.ariaLive = 'polite';</code>
@@ -18,14 +177,18 @@ element.ariaLive = 'polite';</code>
   </p-fragment>
 </p-slide>
 <p-slide>
-  <pre class="big language-js"><code class="language-js">class AlertModal extends HTMLElement {
-  role = 'alertdialog';
-  ariaExpandend = false;</code><div
-  style="position: relative;"><code class="language-js" style="white-space: pre;">  constructor() {
-    super();
-    this.setAttribute('role', 'alertdialog');
-    this.setAttribute('aria-expanded', 'false');
-  }</code><p-fragment><svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment></div>}</code></pre>
+  <pre class="self-center"><code class="language-js">class AlertModal extends HTMLElement {
+  constructor() {
+    super();</code>
+<div style="position: relative;"><code class="language-js" style="white-space: pre;"
+>    this.setAttribute('role', 'alertdialog');
+    this.setAttribute('aria-expanded', 'false');</code><p-fragment><svg
+      class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment></div><p-fragment><code class="language-js">
+    #internals = this.attachInternals();
+    #internals.role = 'alertdialog';
+    #internals.ariaExpanded = false;</code></p-fragment>
+  }
+}</pre>
 </p-slide>
 <p-slide>
   <pre class="big self-center"><code class="language-js">element.ariaDescribedBy = 'boxTitle';</code>
@@ -52,10 +215,12 @@ element.ariaDescribedByElements = [
 </p-slide>
 <p-slide>
   <pre class="self-center"><code class="language-js">connectedCallback() {
-  const root = this.shadowRoot;
-  const input = root.querySelector('input');
-  const list = root.querySelector('custom-optionlist');
-  input.ariaOwns = [ list ];
+  const input = this.shadowRoot.querySelector('input');
+  const list = this.querySelector('custom-optionlist');
+  input.ariaOwnsElements = [ list ];
   input.ariaActiveDescendantElement = list.firstChild;
 }</code></pre>
+</p-slide>
+<p-slide>
+  <h2 class="our-header"><code>ElementInternals</code></h2>
 </p-slide>
