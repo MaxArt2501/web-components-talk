@@ -197,3 +197,21 @@ svg.cross path {
   stroke-width: .2em;
   vector-effect: non-scaling-stroke;
 }
+
+.jonathan-swan {
+  > div {
+    position: relative;
+    &:first-child {
+      z-index: 1;
+    }
+    > img + p-fragment {
+      position: absolute;
+      top: 7em;
+      right: -.5em;
+      transform: translate(50%, 0);
+    }
+  }
+  img {
+    width: 11em;
+  }
+}
