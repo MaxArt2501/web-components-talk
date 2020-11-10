@@ -1,0 +1,40 @@
+<p-slide>
+  <h4 class="our-header">Scoped Custom Elements Registries</h4>
+  <pre class="self-center"><code class="language-js">const registry = new CustomElementRegistry();
+registry.define('daily-question', DailyQuestion);</code>
+
+<p-fragment><code class="language-js">const root = document.querySelector('#app');
+root.attachShadow({ mode: 'open', registry });</code></p-fragment>
+
+<p-fragment><code class="language-js">root.shadowRoot.innerHTML =
+  '&lt;daily-question>Tabs or spaces?&lt;/daily-question>';</code></p-fragment></pre>
+  <p-notes>Attaching a scoped registry to a Shadow DOM because it provides an encapsulation
+    mechanism mechanism out of the box</p-notes>
+</p-slide>
+<p-slide>
+  <img style="height: 10em;" src="img/scoped-registries.svg" alt="A chart showing how a custom element inside a shadow root can be resolved in the shadow root's own custom element registry, and then the global registry">
+</p-slide>
+<p-slide class="center">
+  <div class="two-columns align-center">
+    <div>
+      <img src="img/drake-bad.webp" alt="Drake 'bad' meme" style="width: 7em">
+    </div>
+    <aside>
+      <h5 class="center">webcomponent-library.js</h5>
+      <pre class="language-js"><code>window.customElements
+  .define('foo-box', FooBox);</code></pre>
+    </aside>
+  </div>
+  <p-fragment>
+    <div class="two-columns align-center">
+      <div>
+        <img src="img/drake-good.webp" alt="Drake 'bad' meme" style="width: 7em">
+      </div>
+      <aside>
+        <pre class="language-js"><code>export function define(reg) {
+  reg.define('foo-box', FooBox);
+}</code></pre>
+      </aside>
+    </div>
+  </p-fragment>
+</p-slide>
