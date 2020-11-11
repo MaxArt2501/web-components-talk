@@ -1,0 +1,51 @@
+<p-slide>
+  <h1 class="our-header">Imperative Shadow DOM distribution</h1>
+  <p-fragment>Because named <code>&lt;slot></code>s are kind of ugly&hellip;</p-fragment>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">The tab list problem</h4>
+  <div class="two-columns">
+    <img src="img/tabs.svg" alt="Picture of a classic tab list widget">
+    <pre class="language-html"><code>&lt;tab-list>
+  &lt;tab-item>
+    &lt;tab-title>Home&lt;/tab-title>
+    &lt;tab-panel>...&lt;/tab-panel>
+  &lt;/tab-item>
+  ...
+&lt;/tab-list></code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h3 class="center">What goes in every slot?</h3>
+  <pre class="language-html self-center"><code>#shadow-root
+&lt;ul>
+  &lt;li>&lt;slot name="tab">&lt;/slot>&lt;/li>
+  ...
+&lt;/ul>
+&lt;div>
+  &lt;slot>&lt;/slot>
+&lt;/div></code></pre>
+  <p-notes>Declarative slots not only aren't powerful enough, but force developers
+    to put <code>slot</code> attributes in very slottable element in the markup.</p-notes>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center"><code>const slot = this.shadowRoot
+  .querySelector('slot:not([name])');
+
+const panels = this.querySelectorAll('tab-panel');
+
+slot.assign([ panels[selectedIndex] ]);</code></pre>
+</p-slide>
+<p-slide class="center uppercase">
+  <h1 class="meme-text" style="top: -2.3em">Don't cross the slots!</h1>
+  <video src="img/dont-cross-the-streams.webm" autoplay loop class="full-media"></video>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>this.attachShadow({
+  mode: 'open',
+  slotAssignment: 'manual'
+});</code></pre>
+</p-slide>
+<p-slide>
+  <support-table chrome="86" firefox safari>Imperative Shadow DOM distribution</support-table>
+</p-slide>
