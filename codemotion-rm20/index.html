@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>The bright future of Web Components</title>
   <base href="..">
-  <link rel="shortcut icon" href="img/ts.png" type="image/png">
+  <link rel="shortcut icon" href="img/web-components.svg" type="image/svg+xml">
   <link rel="stylesheet" href="vendor/prismjs/themes/prism-okaidia.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/print.css" media="print">
@@ -58,6 +58,903 @@
     maxart2501.github.io/web-components-talk/codemotion-rm20/
   </a>
 </p-slide>
+    <p-slide>
+  <h1>
+    So&hellip;<br>
+    <p-fragment>
+      Web Components.
+    </p-fragment>
+  </h1>
+</p-slide>
+<p-slide>
+  <h1 class="center">Let's be honest</h1>
+  <ul class="self-center">
+    <li><p-fragment>👎 awkward API</p-fragment></li>
+    <li><p-fragment>👎 only with JS</p-fragment></li>
+    <li><p-fragment>👎 hard to style</p-fragment></li>
+    <li><p-fragment>👎 bad for accessibility</p-fragment></li>
+    <li><p-fragment>👎 bad for SEO</p-fragment></li>
+    <li><p-fragment>👎 global naming</p-fragment></li>
+  </ul>
+</p-slide>
+<p-slide>
+  <pre class="self-center language-javascript"><code>class MyBox</code> <p-fragment><code>extends HTMLElement</code></p-fragment> {
+  <p-fragment><code>constructor() {
+    super();
+    // ...
+  }</code></p-fragment>
+  <p-fragment><code>connectedCallback() {}
+  disconnectedCallback() {}
+  attributeChangedCallback() {}
+  adoptedCallback() {}</code></p-fragment>
+  <p-fragment><code>static get observedAttributes() {
+    return ['foo'];
+  }</code></p-fragment>
+}</code></pre>
+</p-slide>
+<p-slide class="center">
+  <h1>&ldquo;I'll just stick to React!&rdquo;</h1>
+  <p-fragment>
+    <h4>(Angular)</h4>
+  </p-fragment>
+  <p-fragment>
+    <h4>(Vue)</h4>
+  </p-fragment>
+  <p-fragment>
+    <h4>(Ember)</h4>
+  </p-fragment>
+  <p-fragment>
+    <h4>(jQuery)</h4>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <video src="img/this-is-fine.webm" autoplay loop class="full-media"></video>
+</p-slide>
+    <p-slide>
+  <h1 class="our-header">
+    The problem with styles
+    <p-fragment>
+      <small>(and Shadow DOM)</small>
+    </p-fragment>
+  </h1>
+</p-slide>
+<p-slide>
+  <ul class="self-center">
+    <li><p-fragment>👉 can't style from outside</p-fragment></li>
+    <li><p-fragment>👉 low level API</p-fragment></li>
+    <li><p-fragment>👉 FOUCs</p-fragment></li>
+  </ul>
+</p-slide>
+<p-slide class="center">
+  <h2>The <code aria-label="deep operator">>>></code> operator&hellip;</h2>
+  <p-fragment class="self-center">
+    <pre class="big language-css"><code>my-form.no-btn >>> button {
+  display: none;
+}</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <p>&hellip; would defeat the purpose of style encapsulation</p>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <h4 class="center">Only this works&hellip;</h4>
+  <div class="self-center">
+    <pre class="language-html big"><code>&lt;my-component style="--my-color: blue">&lt;/my-component></code></pre>
+    <pre class="language-css big"><code>/* my-component.css */
+:host > div {
+  background-color: var(--my-color);
+}</code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h4 class="center">A great idea!</h4>
+  <pre class="language-css self-center"><code>/* styles.css */
+:root {
+  --my-mixin: {
+    background-color: red;
+    color: white;
+  }
+}
+/* my-component.css */
+:host > div {
+  @apply(--my-mixin);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h4 class="center">&hellip; but what does <em>this</em> even mean?</h4>
+  <pre class="language-css self-center"><code>:root {
+  --my-color: red;
+  --my-mixin: {
+    background-color: var(--my-color);
+  }
+}
+.a-test {
+  --my-color: green;
+  @apply(--my-mixin);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">CSS Shadow Parts</h4>
+  <div class="self-center">
+    <pre class="language-html"><code>#shadow-root
+  &lt;header part="box-header">...&lt;/header>
+  &lt;div part="box-content">...&lt;/div></code></pre>
+    <p-fragment>
+      <pre class="language-css"><code>/* styles.css */
+::part(box-header) {
+  font: bold 2em system-ui, sans-serif;
+}</code></pre>
+    </p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <h4>Part forwarding</h4>
+  <div class="self-center">
+    <pre class="language-html"><code>#shadow-root (inner-box)
+  &lt;hr>
+  &lt;section part="inner-content">...&lt;/section>
+  &lt;hr></code></pre>
+    <pre class="language-html"><code>#shadow-root (outer-box)
+  &lt;header part="outer-header">...&lt;/header>
+  &lt;inner-box part="inner-content => outer-content">...&lt;/inner-box></code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <support-table chrome="73" firefox="72" safari="13.1">Shadow Parts</support-table>
+  <a class="center" href="https://developer.mozilla.org/en-US/docs/Web/CSS/::part">
+    developer.mozilla.org/en-US/docs/Web/CSS/::part
+  </a>
+</p-slide>
+<p-slide>
+  <h1 class="center">&ldquo;Loading .css files is a pain!&rdquo;</h1>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>constructor() {
+  ...
+  const styleEl = document.createElement('style');
+  styleEl.textContent = 'div { color: red; }';
+  this.shadowRoot.appendChild(styleEl);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>constructor() {
+  ...
+  const linkEl = document.createElement('link');
+  linkEl.rel = 'stylesheet';
+  linkEl.href = 'component.css';
+  this.shadowRoot.appendChild(linkEl);
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h2 class="center">A new way to apply styles</h2>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>const styles = new CSSStyleSheet();
+styles.replaceSync('div { color: red; }');
+
+// Or asynchronously, we can use @import
+styles.replace('@import "/foo.css"')
+  .then(sheet => { ... });</code></pre>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>import { styles } from './styles.js';
+
+class MyComponent extends HTMLElement {
+  constructor() {
+    ...
+    this.shadowRoot.adoptedStyleSheets = [ styles ];
+  }
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">&hellip;The heck is <code>.adoptedStyleSheets</code>?</h4>
+  <p-fragment class="self-center">
+    <p-fragment><em>Frozen</em></p-fragment>
+    <code>Array</code>
+  </p-fragment>
+  <p-fragment class="self-center">
+    <small>as in <code>Object.freeze</code></small>
+  </p-fragment>
+</p-slide>
+<p-slide class="center">
+  <div class="two-columns jonathan-swan">
+    <div>
+      <img src="img/jon-swan-before.jpg" alt="Jonathan Swan's famous focused face while reading a paper handed by Donald Trump">
+      <p-fragment>
+        <pre class="language-js" style="filter: invert(1);"><code>document.adoptedStyleSheets = [
+  ...document.adoptedStyleSheets,
+  sheet
+];</code></pre>
+      </p-fragment>
+    </div>
+    <div>
+      <p-fragment>
+        <img src="img/jon-swan-after.jpg" alt="Jonathan Swan's famous confused face after reading a paper handed by Donald Trump">
+      </p-fragment>
+    </div>
+  </div>
+</p-slide>
+<p-slide>
+  <support-table chrome="73" firefox="" safari="">Constructable Stylesheets</support-table>
+</p-slide>
+<p-slide>
+  <h1 class="center">&ldquo;Better, but&hellip;&rdquo;</h1>
+</p-slide>
+<p-slide>
+  <h1 class="center">CSS Modules</h1>
+  <p-fragment><h4 class="center">
+    (No, not <em>those</em> <a href="https://github.com/css-modules/css-modules">CSS Modules</a>&hellip;
+  </h4></p-fragment>
+</p-slide>
+<p-slide>
+  <h3 class="our-header"><em>These</em> CSS Modules&hellip;</h3>
+  <p-fragment class="self-center">
+    <pre class="language-js big"><code>import sheet from './styles.css';</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <p class="center"><code>sheet</code> is a <code>CSSStyleSheet</code></p>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>import sheet from './styles.css';
+
+class MyComponent extends HTMLElement {
+  constructor() {
+    ...
+    this.shadowRoot.adoptedStyleSheets = [ sheet ];
+  }
+}</code></pre>
+</p-slide>
+<p-slide>
+  <support-table chrome="" firefox="" safari="">CSS Modules</support-table>
+  <a href="https://github.com/w3c/webcomponents/issues/759" class="center">
+    github.com/w3c/webcomponents/issues/759
+  </a>
+</p-slide>
+    <p-slide>
+  <h1 class="center">What about HTML?</h1>
+</p-slide>
+<p-slide>
+  <p-notes>
+    <ul>
+      <li>Still needs JS</li>
+      <li>Modular, but not ES6 modular</li>
+      <li>Blocking loading</li>
+      <li>Global object pollution</li>
+    </ul>
+  </p-notes>
+  <h3 class="our-header">Once upon a time&hellip;</h3>
+  <div class="self-center relative">
+    <p-fragment>
+      <h2 class="center">HTML Imports</h2>
+    </p-fragmen>
+    <p-fragment>
+      <pre class="language-html"><code>&lt;link rel="import" href="/template.html"></code></pre>
+    </p-fragment>
+    <p-fragment>
+      <svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg>
+    </p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <h1 class="center">HTML Modules</h1>
+  <p-fragment class="self-center">
+    <pre class="language-js big"><code>import templateDoc from './template.html';</code></pre>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">A simple case</h4>
+  <div class="self-center">
+    module.html
+    <pre class="language-html"><code>&lt;blockquote>
+  640K is more memory than anyone will ever need.
+&lt;/blockquote></code></pre>
+    <p-fragment>
+      main.js
+      <pre class="language-js"><code>import quoteDoc from './module.html';
+console.log(quoteDoc.constructor.name); // HTMLDocument</code></pre>
+    </p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <p-notes>This works in IE10 too</p-notes>
+  <h3 class="center">How is that better than this?</h3>
+  <pre class="language-js big self-center"><code>const xhr = new XMLHttpRequest();
+xhr.responseType = 'document';
+xhr.open('GET', './module.html');
+xhr.send();
+xhr.onload = () => console.log(xhr.response);</code></pre>
+</p-slide>
+<p-slide>
+  <h1 class="center">
+    HTML Modules are
+    <p-fragment><em>not</em> inert!</p-fragment>
+  </h1>
+</p-slide>
+<p-slide>
+  <p-notes>But only those of <code>type="module"</code></p-notes>
+  <h3 class="center">
+    <code>script</code>s are executed
+  </h3>
+  <p-fragment class="self-center relative">
+    module.html
+    <pre class="language-html"><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template>
+&lt;script type="module"></code><code class="language-js">
+  const doc = import.meta.document;
+  export const content = doc.querySelector('template').content;
+</code><code class="language-html">&lt;/script></code></pre>
+    main.js
+    <pre class="language-js"><code>import { content } from './module.html';</code></pre>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="language-html self-center"><p-fragment><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template></code></p-fragment>
+<p-fragment><code class="language-html">&lt;script type="module"></code>
+  <p-fragment><code class="language-js">import sheet from './today-date.css';</code></p-fragment>
+  <p-fragment><code class="language-js">const doc = import.meta.document;</code></p-fragment>
+  <p-fragment><code class="language-js">export class TodayDate extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoow.adoptedStyleSheets = [ sheet ];
+      this.shadowRoot.appendChild(
+        doc.querySelector('template').content.cloneNode(true)
+      );
+    }
+  }</code></p-fragment>
+<code class="language-html">&lt;/script></code></p-fragment></pre>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">Even cooler: scriptless exports?</h4>
+  <pre class="self-center"><code class="language-html">&lt;!-- module.html -->
+&lt;template namedexport="content">
+  I'm exported without JS!</code>
+  <p-fragment><code class="language-html">&lt;content import="submodule.html" namedimport="part">&lt;/content></code></p-fragment>
+<code class="language-html">&lt;/template></code>
+
+<code class="language-js">// main.js
+import { content } from './module.html';</code></pre>
+</p-slide>
+<p-slide class="center">
+  <h3>There's still ugliness!</h3>
+  <p-fragment>
+    <p>What about templates?</p>
+  </p-fragment>
+</p-slide>
+<p-slide class="center">
+  <h3>We have&hellip; <code>&lt;template></code>s</h3>
+  <p-fragment>
+    <h1 class="uppercase center">BUT&hellip;</h1>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <h1 class="center"><code>&lt;template></code>s are <em>static</em></h1>
+</p-slide>
+<p-slide>
+  <div class="self-center">
+    <pre><code class="language-html">&lt;template>
+  Today is &lt;time>&lt;/time>
+&lt;/template>
+
+&lt;script></code><code class="language-js">
+  const { content } = document.querySelector('template');
+  const copy = content.cloneNode(true);
+  copy.querySelector('time').textContent = new Date();</code>
+<code class="language-html">&lt;/script></code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h1 class="center">Is <em>this</em> what we're given? 😭</h1>
+</p-slide>
+<p-slide>
+  <div class="two-columns">
+    <aside class="center">
+      <img src="img/react.svg" alt="React logo" style="height: 2em;">
+      <pre><code class="language-js">function MyDate() {
+  return </code><code class="language-html">&lt;div>
+    Today is
+    &lt;time></code><code class="language-js">{ new Date() }</code><code class="language-html">&lt;/time>
+  &lt;/div></code><code class="language-js">;
+}</code></pre>
+    </aside>
+    <aside class="center">
+      <img src="img/angular.svg" alt="Angular logo" style="height: 2em;">
+      <pre><code class="language-js">@Component({
+  selector: 'my-date',
+  template: `</code><code class="language-html">Today is
+    &lt;time>{{ date }}&lt;/time></code><code class="language-js">`
+})
+class MyDate { date = new Date }</code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h2 class="center">Community to the rescue 🙌</h2>
+</p-slide>
+<p-slide>
+  <p-notes>lit-html is by Justin Fagnani, from Google.
+    They know templates aren't up to the task!</p-notes>
+  <div class="self-center">
+    <p><a href="https://lit-html.polymer-project.org/">lit-html</a></p>
+    <pre class="big"><code class="language-js">import { html } from 'lit-html';
+function MyDate() {
+  return html`</code><code class="language-html">&lt;div>
+    Today is
+    &lt;time></code>$<code class="language-js">{ new Date() }</code><code class="language-html">&lt;/time>
+  &lt;/div></code><code class="language-js">`;
+}</code></pre>
+  </div>
+  <p class="center"><small>
+    Notable alternatives:
+    <a href="https://github.com/WebReflection/hyperHTML">hyperHTML</a>,
+    <a href="https://github.com/choojs/nanohtml">nanohtml</a>
+  </small></p>
+</p-slide>
+<p-slide>
+  <h1 class="center">
+    Hold up! ✋<br>
+    There's something!
+  </h1>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">
+    <a href="https://github.com/w3c/webcomponents/blob/gh-pages/proposals/Template-Instantiation.md">
+      Template Instantiation
+    </a>
+  </h4>
+  <div class="two-columns">
+    <pre><code class="language-html">&lt;template>
+  Today is
+  &lt;time datetime="{{ iso }}">
+    {{ date }}
+  &lt;/time>
+&lt;/template></code></pre>
+    <p-fragment>
+      <pre><code class="language-js">const date = new Date();
+const instance =
+  template.createInstance({
+    date: date.toString(),
+    iso: date.toISOString()
+  });</code></pre>
+    </p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <h1 class="center">
+    &hellip; but it'll have to wait
+    <br><br>
+    🤷‍♀️
+  </h1>
+  <p-notes>
+    Because introducing a Mustache-like syntax would be too hazardous
+  </p-notes>
+</p-slide>
+<p-slide>
+  <h2 class="our-header">A
+    <a href="https://github.com/w3c/webcomponents/blob/gh-pages/proposals/DOM-Parts.md">
+      brand new proposal
+    </a>
+  </h2>
+  <pre class="self-center"><code class="language-html">&lt;p>Today is &lt;time>&lt;/time>&lt;/p></code>
+
+<p-fragment><code class="language-js">const todayPart = new ChildNodePart(timeEl);</code></p-fragment>
+<p-fragment><code class="language-js">todayPart.value = new Date().toDateString();</code></p-fragment>
+<p-fragment><code class="language-js">todayPart.commit();</code></p-fragment>
+
+<p-fragment><code class="language-html">&lt;p>Today is &lt;time>Wed Nov 25 2020&lt;/time>&lt;/p></code></p-fragment></pre>
+</p-slide>
+    <p-slide>
+  <h1 class="our-header">Accessibility concerns</h1>
+</p-slide>
+<p-slide>
+  <img class="full-media" src="img/wait-its-all-divs.webp" alt="Meme of the two astronauts, looking at some HTML code, the first saying 'Wait, it's all divs?', the other replying 'Always has been'">
+</p-slide>
+<p-slide>
+  <h2 class="center">We have <code>role</code>, <code>aria-*</code>&hellip;</h2>
+  <p-fragment><h1 class="center">What else?</h1></p-fragment>
+</p-slide>
+<p-slide class="center uppercase">
+  <h2 class="meme-text" style="top: -2em">Doing things right&hellip;</h2>
+  <video src="img/difficult.webm" autoplay loop class="full-media"></video>
+  <h1 class="meme-text" style="top: 1.5em">&hellip; is hard!</h1>
+</p-slide>
+<p-slide>
+  <pre style="font-size: .2em; columns: 3"><code class="language-css">better-button {
+  box-sizing: border-box;
+  min-width: 5.14em;
+  margin: 0 0.29em;
+  font: inherit;
+  text-transform: uppercase;
+  outline-width: 0;
+  border-radius: 3px;
+  user-select: none;
+  cursor: pointer;
+  padding: 0.7em 0.57em;
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  contain: content;
+}
+better-button[raised]:not([disabled]),
+better-button:not([disabled]):hover {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12),
+              0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+better-button[disabled] {
+  background: #eaeaea;
+  color: #a8a8a8;
+  cursor: auto;
+  pointer-events: none;
+  box-shadow: none;
+}
+better-button:not([disabled]):focus {
+  font-weight: 500;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+              0 1px 18px 0 rgba(0, 0, 0, 0.12),
+              0 3px 5px -1px rgba(0, 0, 0, 0.4);
+}
+better-button .ripple {
+  position: absolute;
+  transform: scale3d(0,0,0);
+  opacity: 0.6;
+  transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  will-change: opacity, transform;
+  pointer-events: none;
+  z-index: -1;
+}
+better-button .ripple.run {
+  opacity: 0;
+  transform: none;
+}
+better-button:not(:defined) { color: red; }</code>
+
+<code class="language-js">class BetterButton extends HTMLElement {
+  static get observedAttributes() {
+    return ['disabled'];
+  }
+
+  get disabled() {
+    return this.hasAttribute('disabled');
+  }
+
+  set disabled(val) {
+    if (val) {
+      this.setAttribute('disabled', '');
+    } else {
+      this.removeAttribute('disabled');
+    }
+  }
+
+  constructor() {
+    super();
+    this.addEventListener('keydown', e => {
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        this.dispatchEvent(new MouseEvent('click',
+          { bubbles: true, cancelable: true }));
+      }
+    });
+
+    this.addEventListener('click', e => {
+      if (this.disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      this.drawRipple(e.offsetX, e.offsetY);
+    });
+  }
+
+  connectedCallback() {
+    this.setAttribute('role', 'button');
+    this.setAttribute('tabindex', '0');
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (this.disabled) {
+      this.setAttribute('tabindex', '-1');
+      this.setAttribute('aria-disabled', 'true');
+    } else {
+      this.setAttribute('tabindex', '0');
+      this.setAttribute('aria-disabled', 'false');
+    }
+  }
+
+  drawRipple(x, y) {
+    let div = document.createElement('div');
+    div.classList.add('ripple');
+    this.appendChild(div);
+    div.style.top = `${y - div.clientHeight/2}px`;
+    div.style.left = `${x - div.clientWidth/2}px`;
+    div.style.backgroundColor = window
+      .getComputedStyle(this).color;
+    div.classList.add('run');
+    div.addEventListener('transitionend', e => div.remove());
+  }
+}
+window.customElements.define('better-button', BetterButton);</code></pre>
+</p-slide>
+<p-slide>
+  <h2 class="our-header">Extending built-in elements</h2>
+  <p-fragment>
+    <pre><code class="language-js">class MyButton extends HTMLButtonElement {&hellip;}</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <pre><code class="language-js">customElements.define('my-button', MyButton, { extends: 'button' });</code></pre>
+  </p-fragment>
+  <p-fragment>
+    <pre><code class="language-html">&lt;button is="my-button">&hellip;&lt;/button></code></pre>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <support-table chrome="66" firefox="63" safari>Customized built-in element support</support-table>
+</p-slide>
+<p-slide>
+  <h4 class="center">&hellip; so.<br>WebKit.</h4>
+  <img style="width: 20em;" src="img/rniwa-is.webp" alt="Excerpt of a comment by NIWA, Ryosuke:
+  I'll note that we've vocally and repeatedly objected to having is=, and in fact, stated
+  publicly that we won't implement this feature">
+  <a href="https://github.com/w3c/webcomponents/issues/509" class="center">github.com/w3c/webcomponents/issues/509</a>
+</p-slide>
+<p-slide>
+  <img style="width: 20em;" src="img/rniwa-extends.webp" alt="Excerpt of a comment by NIWA, Ryosuke:
+  We won't be supporting extends either.
+  One fundamental problem is that subclassing a subclass of HTMLInputElement or HTMLImageElement
+  often leads to a violation of the Liskov substitution principle over time...
+  ... we don't have any hooks for the processing models and internal states of builtin elements...
+  Finally, the whole design of is= is a hack, and it would harm the long term health of the Web platform.">
+  <p-fragment><img src="img/emergency-meeting.webp" alt="Among Us' 'emergency meeting' banner" class="full-media"></p-fragment>
+</p-slide>
+<p-slide>
+  <h3 class="our-header">Accessible Object Model (AOM)</h3>
+  <p-fragment class="self-center">
+    <pre class="big"><code class="language-js">element.ariaLabel = 'This is the result';
+element.ariaLive = 'polite';</code>
+
+<p-fragment><code class="language-html">&lt;output aria-label="This is the result"
+  aria-live="polite">...&lt;/output></code></p-fragment></pre>
+  </p-fragment>
+  <p-fragment class="landing" style="bottom: 5%; right: 5%">
+    <img src="img/ie.svg" alt="Internet Explorer logo" style="height: 7em; transform: rotate(-20deg);">
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="self-center"><code class="language-js">class AlertModal extends HTMLElement {
+  constructor() {
+    super();</code>
+<div style="position: relative;"><code class="language-js" style="white-space: pre;"
+>    this.setAttribute('role', 'alertdialog');
+    this.setAttribute('aria-expanded', 'false');</code><p-fragment><svg
+      class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment></div><p-fragment><code class="language-js">
+    #internals = this.attachInternals();
+    #internals.role = 'alertdialog';
+    #internals.ariaExpanded = false;</code></p-fragment>
+  }
+}</pre>
+</p-slide>
+<p-slide>
+  <pre class="big self-center"><code class="language-js">element.ariaDescribedBy = 'boxTitle';</code>
+<p-fragment><code class="language-js">// ... implies
+element.ariaDescribedByElements = [
+  boxTitleElement
+];</code></p-fragment></pre>
+  <p-notes>Let's see why it's so important for Web Components</p-notes>
+</p-slide>
+<p-slide>
+  <div class="self-center">
+    <pre><code class="language-html">&lt;!-- custom-combobox Shadow DOM -->
+&lt;input aria-owns="optList" aria-activedescendant="opt1">
+&lt;slot>&lt;/slot>
+
+&lt;custom-combobox>
+  &lt;custom-optionlist id="optList">
+    &lt;custom-option id="opt1">Option 1&lt;/custom-option>
+    ...
+  &lt;/custom-optionlist>
+&lt;/custom-combobox></code></pre>
+<p-fragment><svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment>
+  </div>
+</p-slide>
+<p-slide>
+  <pre class="self-center"><code class="language-js">connectedCallback() {
+  const input = this.shadowRoot.querySelector('input');
+  const list = this.querySelector('custom-optionlist');
+  input.ariaOwnsElements = [ list ];
+  input.ariaActiveDescendantElement = list.firstChild;
+}</code></pre>
+</p-slide>
+<p-slide>
+  <support-table chrome="81" firefox safari><code>ElementInternals</code> for custom elements
+  </support-table>
+</p-slide>
+    <p-slide>
+  <img class="full-media" src="img/wait-its-all-js.webp" alt="Meme of the two astronauts, looking at some JS code, the first saying 'Wait, it's all JavaScript?', the other replying 'Always has been'">
+</p-slide>
+<p-slide>
+  <h2 class="our-header">Declarative Shadow DOM</h2>
+  <p-fragment class="self-center">
+    <pre><code class="language-html">&lt;daily-question>
+  &lt;template shadowroot="open">
+    &lt;h2>Question of the day&lt;/h2>
+    &lt;slot>&lt;/slot>
+  &lt;/template>
+  &lt;p>Is the cat inside?&lt;/p>
+&lt;/daily-question></code></pre>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <pre class="self-center"><code class="language-js">class DailyQuestion extends HTMLElement {
+  constructor() {
+    super();
+    // A custom element now *might* have
+    // a shadow root already attached
+    if (!this.shadowRoot) {
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoow.innerHTML = '...';
+    }
+    ...
+  }
+  ...
+}</code></pre>
+  <p-notes>
+    This is also retro-compatible, meaning that re-declaring a shadow root
+    with <code>.attachShadow()</code> will just remove the one created by
+    the Declarative Shadow DOM, letting old Web Components still work.
+  </p-notes>
+</p-slide>
+<p-slide>
+  <h3 class="our-header">Getting a string back&hellip;</h3>
+  <div class="two-columns align-center">
+    <p-fragment><pre><code class="language-js">dailyQuestion.innerHTML
+'&lt;p>Is the cat inside?&lt;/p>'</code></pre></p-fragment>
+    <p-fragment><pre><code class="language-js">dailyQuestion.getInnerHTML({
+  includeShadowRoots: true
+})
+`&lt;template shadowroot="open">
+  &lt;h2>Question of the day&lt;/h2>
+  &lt;slot>&lt;/slot>
+&lt;/template>
+&lt;p>Is the cat inside?&lt;/p>`</code></pre></p-fragment>
+  </div>
+  <p-notes>
+    <code>includeShadowRoots: true</code> is the default setting.
+    <code>includeShadowRoots: false</code> makes <code>.getinnerHTML()</code>
+    behave like <code>.innerHTML</code>
+  </p-notes>
+</p-slide>
+<p-slide>
+  <pre class="self-center"><code class="language-html">&lt;daily-question>
+  &lt;template>
+    &lt;h2>Question of the day #1&lt;/h2>
+    &lt;slot>&lt;/slot>
+  &lt;/template>
+  &lt;p>Is the cat inside?&lt;/p>
+&lt;/daily-question>
+&lt;daily-question>
+  &lt;template>
+    &lt;h2>Question of the day #2&lt;/h2>
+    &lt;slot>&lt;/slot>
+  &lt;/template>
+  &lt;p>Who's a good boy?&lt;/p>
+&lt;/daily-question></code></pre>
+</p-slide>
+<p-slide>
+  <h3 class="our-header">Easy styles!</h3>
+  <pre class="self-center"><code class="language-html">&lt;retro-banner>
+  &lt;template shadowroot="open">
+    &lt;link rel="stylesheet" href="/eigthies.css">
+    &lt;h1>&lt;slot>&lt;/slot>&lt;/h1>
+  &lt;/template>
+  Bring the `80s back!
+&lt;/retro-banner></code></pre>
+  <p-notes>
+    <ul>
+      <li>It also caches the stylesheet, so it won't be loaded again</li>
+      <li>Constructable stylesheets are not serializable, so&hellip;</li>
+    </ul>
+  </p-notes>
+</p-slide>
+<p-slide>
+  <support-table chrome="85*" firefox safari>Declarative Shadow DOM</support-table>
+</p-slide>
+    <p-slide>
+  <h4 class="our-header">Scoped Custom Elements Registries</h4>
+  <pre class="self-center"><code class="language-js">const registry = new CustomElementRegistry();
+registry.define('daily-question', DailyQuestion);</code>
+
+<p-fragment><code class="language-js">const root = document.querySelector('#app');
+root.attachShadow({ mode: 'open', registry });</code></p-fragment>
+
+<p-fragment><code class="language-js">root.shadowRoot.innerHTML =
+  '&lt;daily-question>Tabs or spaces?&lt;/daily-question>';</code></p-fragment></pre>
+  <p-notes>Attaching a scoped registry to a Shadow DOM because it provides an encapsulation
+    mechanism mechanism out of the box</p-notes>
+</p-slide>
+<p-slide>
+  <img style="height: 10em;" src="img/scoped-registries.svg" alt="A chart showing how a custom element inside a shadow root can be resolved in the shadow root's own custom element registry, and then the global registry">
+</p-slide>
+<p-slide class="center">
+  <div class="two-columns align-center">
+    <div>
+      <img src="img/drake-bad.webp" alt="Drake 'bad' meme" style="width: 7em">
+    </div>
+    <aside>
+      <h5 class="center">webcomponent-library.js</h5>
+      <pre class="language-js"><code>window.customElements
+  .define('foo-box', FooBox);</code></pre>
+    </aside>
+  </div>
+  <p-fragment>
+    <div class="two-columns align-center">
+      <div>
+        <img src="img/drake-good.webp" alt="Drake 'bad' meme" style="width: 7em">
+      </div>
+      <aside>
+        <pre class="language-js"><code>export function define(reg) {
+  reg.define('foo-box', FooBox);
+}</code></pre>
+      </aside>
+    </div>
+  </p-fragment>
+</p-slide>
+<p-slide>
+  <support-table chrome firefox safari>Scoped Custom Elements Registries</support-table>
+</p-slide>
+    <p-slide>
+  <h1 class="our-header">Imperative Shadow DOM distribution</h1>
+  <p-fragment>Because named <code>&lt;slot></code>s are kind of ugly&hellip;</p-fragment>
+</p-slide>
+<p-slide>
+  <h4 class="our-header">The tab list problem</h4>
+  <div class="two-columns">
+    <img src="img/tabs.svg" alt="Picture of a classic tab list widget">
+    <pre class="language-html"><code>&lt;tab-list>
+  &lt;tab-item>
+    &lt;tab-title>Home&lt;/tab-title>
+    &lt;tab-panel>...&lt;/tab-panel>
+  &lt;/tab-item>
+  ...
+&lt;/tab-list></code></pre>
+  </div>
+</p-slide>
+<p-slide>
+  <h3 class="center">What goes in every slot?</h3>
+  <pre class="language-html self-center"><code>#shadow-root
+&lt;ul>
+  &lt;li>&lt;slot name="tab">&lt;/slot>&lt;/li>
+  ...
+&lt;/ul>
+&lt;div>
+  &lt;slot>&lt;/slot>
+&lt;/div></code></pre>
+  <p-notes>Declarative slots not only aren't powerful enough, but force developers
+    to put <code>slot</code> attributes in very slottable element in the markup.</p-notes>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center"><code>const slot = this.shadowRoot
+  .querySelector('slot:not([name])');
+
+const panels = this.querySelectorAll('tab-panel');
+
+slot.assign([ panels[selectedIndex] ]);</code></pre>
+</p-slide>
+<p-slide class="center uppercase">
+  <h1 class="meme-text" style="top: -2.3em">Don't cross the slots!</h1>
+  <video src="img/dont-cross-the-streams.webm" autoplay loop class="full-media"></video>
+</p-slide>
+<p-slide>
+  <pre class="language-js self-center big"><code>this.attachShadow({
+  mode: 'open',
+  slotAssignment: 'manual'
+});</code></pre>
+</p-slide>
+<p-slide>
+  <support-table chrome="86" firefox safari>Imperative Shadow DOM distribution</support-table>
+</p-slide>
+    <!-- slide:async tasks -->
+    <!-- slide:ecosystem -->
   </p-deck>
   <div role="progressbar" class="presentation-progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
   <div role="toolbar" class="presentation-toolbar">
@@ -75,6 +972,18 @@
     <button type="button" class="previous" title="Go backward" aria-label="Go backward"></button>
     <button type="button" class="next" title="Go forward" aria-label="Go forward"></button>
   </nav>
+  <!-- <my-box>
+    <template shadowroot="open">
+      Today is <slot></slot>
+    </template>
+    sunny
+  </my-box>
+  <my-box>
+    <template shadowroot="open">
+      Tomorrow is <slot></slot>
+    </template>
+    warm
+  </my-box> -->
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/presentation.js"></script>
   <script defer src="vendor/prismjs/prism.js"></script>

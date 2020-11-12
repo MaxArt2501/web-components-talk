@@ -7,7 +7,7 @@ export class PresentationFragmentElement extends HTMLElement {
       this.isVisible = false;
     }
     createRoot(this, '<slot></slot>');
-    attachStyle('fragment', this.root);
+    attachStyle(this);
   }
 
   get index() {
@@ -27,5 +27,16 @@ export class PresentationFragmentElement extends HTMLElement {
   }
   set isVisible(isVisible) {
     this.setAttribute('aria-hidden', `${!isVisible}`);
+  }
+
+  get isCurrent() {
+    return this.hasAttribute('current');
+  }
+  set isCurrent(isCurrent) {
+    if (isCurrent) {
+      this.setAttribute('current', '');
+    } else {
+      this.removeAttribute('current');
+    }
   }
 }
