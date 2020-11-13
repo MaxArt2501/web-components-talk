@@ -34,42 +34,6 @@
   </p-notes>
 </p-slide>
 <p-slide>
-  <h3 class="our-header">Getting a string back&hellip;</h3>
-  <div class="two-columns align-center">
-    <p-fragment><pre><code class="language-js">dailyQuestion.innerHTML
-'&lt;p>Is the cat inside?&lt;/p>'</code></pre></p-fragment>
-    <p-fragment><pre><code class="language-js">dailyQuestion.getInnerHTML({
-  includeShadowRoots: true
-})
-`&lt;template shadowroot="open">
-  &lt;h2>Question of the day&lt;/h2>
-  &lt;slot>&lt;/slot>
-&lt;/template>
-&lt;p>Is the cat inside?&lt;/p>`</code></pre></p-fragment>
-  </div>
-  <p-notes>
-    <code>includeShadowRoots: true</code> is the default setting.
-    <code>includeShadowRoots: false</code> makes <code>.getinnerHTML()</code>
-    behave like <code>.innerHTML</code>
-  </p-notes>
-</p-slide>
-<p-slide>
-  <pre class="self-center"><code class="language-html">&lt;daily-question>
-  &lt;template>
-    &lt;h2>Question of the day #1&lt;/h2>
-    &lt;slot>&lt;/slot>
-  &lt;/template>
-  &lt;p>Is the cat inside?&lt;/p>
-&lt;/daily-question>
-&lt;daily-question>
-  &lt;template>
-    &lt;h2>Question of the day #2&lt;/h2>
-    &lt;slot>&lt;/slot>
-  &lt;/template>
-  &lt;p>Who's a good boy?&lt;/p>
-&lt;/daily-question></code></pre>
-</p-slide>
-<p-slide>
   <h3 class="our-header">Easy styles!</h3>
   <pre class="self-center"><code class="language-html">&lt;retro-banner>
   &lt;template shadowroot="open">
@@ -79,10 +43,10 @@
   Bring the `80s back!
 &lt;/retro-banner></code></pre>
   <p-notes>
-    <ul>
-      <li>It also caches the stylesheet, so it won't be loaded again</li>
-      <li>Constructable stylesheets are not serializable, so&hellip;</li>
-    </ul>
+    DSD also makes it easy (again) to load stylesheets for Web Components. All you need to do is to
+    insert a <code>&lt;link></code> element inside the template, as we used to do with JavaScript.
+    The stylesheet get cached too, so it won't be loaded again for all the other instances of the same
+    component.
   </p-notes>
 </p-slide>
 <p-slide>
