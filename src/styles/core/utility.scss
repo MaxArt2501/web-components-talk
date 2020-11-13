@@ -110,13 +110,3 @@
   line-height: 1.5;
   z-index: 10;
 }
-
-p-fragment.landing {
-  position: absolute;
-  transform: scale(3);
-  transition: opacity var(--fragment-duration, 300ms), transform var(--fragment-duration, 300ms);
-
-  &[aria-hidden="false"] {
-    transform: scale(1);
-  }
-}

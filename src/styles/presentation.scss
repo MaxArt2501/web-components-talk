@@ -20,6 +20,16 @@ p-deck::after {
   z-index: 100;
 }
 
+p-fragment.landing {
+  position: absolute;
+  transform: scale(3);
+  transition: opacity var(--fragment-duration, 300ms), transform var(--fragment-duration, 300ms);
+
+  &[aria-hidden="false"], p-deck[mode="speaker"] & {
+    transform: scale(1);
+  }
+}
+
 .cover {
   padding: 0;
 
