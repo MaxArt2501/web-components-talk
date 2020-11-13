@@ -28,6 +28,7 @@
   <p-fragment class="self-center">
     <pre class="language-js big"><code>import templateDoc from './template.html';</code></pre>
   </p-fragment>
+  <p-notes>This is a proposal from Microsoft, and not Google for once</p-notes>
 </p-slide>
 <p-slide>
   <h4 class="our-header">A simple case</h4>
@@ -44,13 +45,13 @@ console.log(quoteDoc.constructor.name); // HTMLDocument</code></pre>
   </div>
 </p-slide>
 <p-slide>
-  <p-notes>This works in IE10 too</p-notes>
   <h3 class="center">How is that better than this?</h3>
   <pre class="language-js big self-center"><code>const xhr = new XMLHttpRequest();
 xhr.responseType = 'document';
 xhr.open('GET', './module.html');
 xhr.send();
 xhr.onload = () => console.log(xhr.response);</code></pre>
+  <p-notes>This works in IE6 too</p-notes>
 </p-slide>
 <p-slide>
   <h1 class="center">
@@ -59,7 +60,6 @@ xhr.onload = () => console.log(xhr.response);</code></pre>
   </h1>
 </p-slide>
 <p-slide>
-  <p-notes>But only those of <code>type="module"</code></p-notes>
   <h3 class="center">
     <code>script</code>s are executed
   </h3>
@@ -73,34 +73,27 @@ xhr.onload = () => console.log(xhr.response);</code></pre>
     main.js
     <pre class="language-js"><code>import { content } from './module.html';</code></pre>
   </p-fragment>
+  <p-notes>
+    That sounds <em>bad</em>, bud actually it's great since the JS part can make its own named exports
+  </p-notes>
+  <p-notes>That also means that only scripts of <code>type="module"</code> work</p-notes>
 </p-slide>
 <p-slide>
-  <pre class="language-html self-center"><p-fragment><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template></code></p-fragment>
-<p-fragment><code class="language-html">&lt;script type="module"></code>
-  <p-fragment><code class="language-js">import sheet from './today-date.css';</code></p-fragment>
-  <p-fragment><code class="language-js">const doc = import.meta.document;</code></p-fragment>
-  <p-fragment><code class="language-js">export class TodayDate extends HTMLElement {
+  <pre class="language-html self-center"><code>&lt;template>Today is &lt;time>&lt;/time>&lt;/template></code>
+<code class="language-html">&lt;script type="module"></code>
+<code class="language-js">  import sheet from './today-date.css';
+  export class TodayDate extends HTMLElement {
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
       this.shadowRoow.adoptedStyleSheets = [ sheet ];
-      this.shadowRoot.appendChild(
-        doc.querySelector('template').content.cloneNode(true)
+      this.shadowRoot.appendChild(import.meta.document
+        .querySelector('template').content.cloneNode(true)
       );
     }
-  }</code></p-fragment>
-<code class="language-html">&lt;/script></code></p-fragment></pre>
-</p-slide>
-<p-slide>
-  <h4 class="our-header">Even cooler: scriptless exports?</h4>
-  <pre class="self-center"><code class="language-html">&lt;!-- module.html -->
-&lt;template namedexport="content">
-  I'm exported without JS!</code>
-  <p-fragment><code class="language-html">&lt;content import="submodule.html" namedimport="part">&lt;/content></code></p-fragment>
-<code class="language-html">&lt;/template></code>
-
-<code class="language-js">// main.js
-import { content } from './module.html';</code></pre>
+  }</code>
+<code class="language-html">&lt;/script></code></pre>
+  <p-notes>&hellip; meaning that a single HTML file can export a whole Web Component out of the box!</p-notes>
 </p-slide>
 <p-slide class="center">
   <h3>There's still ugliness!</h3>
@@ -129,6 +122,11 @@ import { content } from './module.html';</code></pre>
   copy.querySelector('time').textContent = new Date();</code>
 <code class="language-html">&lt;/script></code></pre>
   </div>
+  <p-notes>
+    We still have manually copy values to elements.
+    <code>&lt;template></code>s are <em>not</em> "string" templates, but rather DOM structure templates,
+    useful to create complex structures fast.
+  </p-notes>
 </p-slide>
 <p-slide>
   <h1 class="center">Is <em>this</em> what we're given? 😭</h1>
@@ -212,7 +210,8 @@ const instance =
     🤷‍♀️
   </h1>
   <p-notes>
-    Because introducing a Mustache-like syntax would be too hazardous
+    Because introducing a Mustache-like syntax would be asking to deal of a lot of possible conflicts
+    on the Web Platform
   </p-notes>
 </p-slide>
 <p-slide>
@@ -228,4 +227,7 @@ const instance =
 <p-fragment><code class="language-js">todayPart.commit();</code></p-fragment>
 
 <p-fragment><code class="language-html">&lt;p>Today is &lt;time>Wed Nov 25 2020&lt;/time>&lt;/p></code></p-fragment></pre>
+  <p-notes>This proposal is still in its early stages, and got out of the strawman phase very recently (October 2020)</p-notes>
+  <p-notes>Similar entities are defined for attributes</p-notes>
+  <p-notes>The names are still tentative</p-notes>
 </p-slide>
