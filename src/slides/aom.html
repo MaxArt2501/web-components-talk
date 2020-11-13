@@ -2,9 +2,6 @@
   <h1 class="our-header">Accessibility concerns</h1>
 </p-slide>
 <p-slide>
-  <img class="full-media" src="img/wait-its-all-divs.webp" alt="Meme of the two astronauts, looking at some HTML code, the first saying 'Wait, it's all divs?', the other replying 'Always has been'">
-</p-slide>
-<p-slide>
   <h2 class="center">We have <code>role</code>, <code>aria-*</code>&hellip;</h2>
   <p-fragment><h1 class="center">What else?</h1></p-fragment>
 </p-slide>
@@ -12,6 +9,9 @@
   <h2 class="meme-text" style="top: -2em">Doing things right&hellip;</h2>
   <video src="img/difficult.webm" autoplay loop class="full-media"></video>
   <h1 class="meme-text" style="top: 1.5em">&hellip; is hard!</h1>
+  <p-notes>
+    Setting up all the accessibility requirements even for basic elements can be long, tedious and error-prone
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre style="font-size: .2em; columns: 3"><code class="language-css">better-button {
@@ -143,6 +143,12 @@ window.customElements.define('better-button', BetterButton);</code></pre>
   <p-fragment>
     <pre><code class="language-html">&lt;button is="my-button">&hellip;&lt;/button></code></pre>
   </p-fragment>
+  <p-notes>
+    This is why Custom Elements, by specification, can extend native elements. All we have to do is
+    to extend the built-in element class&hellip; then refence the extended element when defining the
+    Custom Element&hellip; then actually use the built-in element but with the <code>is=</code>
+    attribute referencing our Custom Element. Kinda awkward, but there's even worse news.
+  </p-notes>
 </p-slide>
 <p-slide>
   <support-table chrome="66" firefox="63" safari>Customized built-in element support</support-table>
@@ -153,6 +159,7 @@ window.customElements.define('better-button', BetterButton);</code></pre>
   I'll note that we've vocally and repeatedly objected to having is=, and in fact, stated
   publicly that we won't implement this feature">
   <a href="https://github.com/w3c/webcomponents/issues/509" class="center">github.com/w3c/webcomponents/issues/509</a>
+  <p-notes>And it has even a justification</p-notes>
 </p-slide>
 <p-slide>
   <img style="width: 20em;" src="img/rniwa-extends.webp" alt="Excerpt of a comment by NIWA, Ryosuke:
@@ -162,6 +169,18 @@ window.customElements.define('better-button', BetterButton);</code></pre>
   ... we don't have any hooks for the processing models and internal states of builtin elements...
   Finally, the whole design of is= is a hack, and it would harm the long term health of the Web platform.">
   <p-fragment><img src="img/emergency-meeting.webp" alt="Among Us' 'emergency meeting' banner" class="full-media"></p-fragment>
+  <p-notes>
+    If the W3C decides to extend a built-in element, then every Custom Element that extends that element
+    has to support the new feature, or it would break.
+  </p-notes>
+  <p-notes>
+    NIWA, Ryosuke also points out that the <code>is</code> attribute is a hack
+    and it's a sentiment shared <em>by the proponents themselves</em>.
+  </p-notes>
+  <p-notes>
+    He suggests using a system based on mixins; others proposed the introduction of "behaviors" (again,
+    reminiscent of Internet Explorer back in the day). But at this point, we have no solution!
+  </p-notes>
 </p-slide>
 <p-slide>
   <h3 class="our-header">Accessible Object Model (AOM)</h3>
@@ -175,6 +194,11 @@ element.ariaLive = 'polite';</code>
   <p-fragment class="landing" style="bottom: 5%; right: 5%">
     <img src="img/ie.svg" alt="Internet Explorer logo" style="height: 7em; transform: rotate(-20deg);">
   </p-fragment>
+  <p-notes>This specification doesn't just involve Web Components, but the platform as a whole.</p-notes>
+  <p-notes>
+    This isn't actually new, as this was actually implemented in Internet Explorer since, like, version 6.
+    But, of course, there's way more to it.
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre class="self-center"><code class="language-js">class AlertModal extends HTMLElement {
@@ -189,6 +213,13 @@ element.ariaLive = 'polite';</code>
     #internals.ariaExpanded = false;</code></p-fragment>
   }
 }</pre>
+  <p-notes>
+    We won't need to use <code>.setAttribute</code> to define the custom element's accessible properties,
+    and that's good because those attributes could be removed or changed from outside. Instead, we can
+    define an <code>ElementInternals</code> object with this new method <code>.attachInternals</code>.
+    This allows us to define accessible semantics <em>internally</em>, so they can't be touched externally.
+    And it get better.
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre class="big self-center"><code class="language-js">element.ariaDescribedBy = 'boxTitle';</code>
@@ -196,13 +227,19 @@ element.ariaLive = 'polite';</code>
 element.ariaDescribedByElements = [
   boxTitleElement
 ];</code></p-fragment></pre>
-  <p-notes>Let's see why it's so important for Web Components</p-notes>
+  <p-notes>
+    For every attribute that takes an id or a list of id's, there's a corresponding property with an
+    <code>Element(s)</code> suffix, that gets filled with the elements pointed by those id's.
+  </p-notes>
+  <p-notes>
+    And we can also do the opposite: define the properties ending with <code>Element(s)</code> to
+    get the same result. Let's see why it's so important for Web Components</p-notes>
 </p-slide>
 <p-slide>
   <div class="self-center">
-    <pre><code class="language-html">&lt;!-- custom-combobox Shadow DOM -->
-&lt;input aria-owns="optList" aria-activedescendant="opt1">
-&lt;slot>&lt;/slot>
+    <pre><code class="language-html">#shadow-root (custom-combobox)
+  &lt;input aria-owns="optList" aria-activedescendant="opt1">
+  &lt;slot>&lt;/slot>
 
 &lt;custom-combobox>
   &lt;custom-optionlist id="optList">
@@ -212,6 +249,10 @@ element.ariaDescribedByElements = [
 &lt;/custom-combobox></code></pre>
 <p-fragment><svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment>
   </div>
+  <p-notes>
+    Dealing with just attributes, not only we'd have the elements in the Shadow DOM with hard-coded id's,
+    but they actually <em>cannot</em> point to elements in the "light" DOM. So this doesn't work.
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre class="self-center"><code class="language-js">connectedCallback() {
@@ -222,6 +263,10 @@ element.ariaDescribedByElements = [
 }</code></pre>
 </p-slide>
 <p-slide>
-  <support-table chrome="81" firefox safari><code>ElementInternals</code> for custom elements
-  </support-table>
+  <support-table chrome="81" firefox safari><code>ElementInternals</code> for custom elements</support-table>
+  <p-notes>
+    <code>ElementInternals</code> yields other nice things too, as it was actually conceived
+    to make Custom Elements as <em>form</em> elements. So we wouldn't actually need to extend
+    the <code>HTMLInputElement</code> or similar classes.
+  </p-notes>
 </p-slide>
