@@ -13,53 +13,28 @@
     <li><p-fragment>👉 FOUCs</p-fragment></li>
   </ul>
 </p-slide>
-<p-slide class="center">
-  <h2>The <code aria-label="deep operator">>>></code> operator&hellip;</h2>
-  <p-fragment class="self-center">
-    <pre class="big language-css"><code>my-form.no-btn >>> button {
-  display: none;
-}</code></pre>
-  </p-fragment>
-  <p-fragment>
-    <p>&hellip; would defeat the purpose of style encapsulation</p>
-  </p-fragment>
-</p-slide>
 <p-slide>
-  <h4 class="center">Only this works&hellip;</h4>
-  <div class="self-center">
-    <pre class="language-html big"><code>&lt;my-component style="--my-color: blue">&lt;/my-component></code></pre>
-    <pre class="language-css big"><code>/* my-component.css */
-:host > div {
-  background-color: var(--my-color);
-}</code></pre>
-  </div>
-</p-slide>
-<p-slide>
-  <h4 class="center">A great idea!</h4>
-  <pre class="language-css self-center"><code>/* styles.css */
-:root {
-  --my-mixin: {
-    background-color: red;
-    color: white;
-  }
+  <!-- <h3>Rejected proposals</h3> -->
+  <ul class="self-center">
+    <li>
+      ❌ The <code aria-label="deep operator">>>></code> operator
+      <pre><code class="language-css">my-form.no-btn >>> button {...}</code></pre>
+    </li>
+    <li>
+      ❌ The <code>@apply</code> function
+      <pre><code class="language-css">:root {
+  --my-mixin: { color: red; }
 }
-/* my-component.css */
 :host > div {
   @apply(--my-mixin);
 }</code></pre>
-</p-slide>
-<p-slide>
-  <h4 class="center">&hellip; but what does <em>this</em> even mean?</h4>
-  <pre class="language-css self-center"><code>:root {
-  --my-color: red;
-  --my-mixin: {
-    background-color: var(--my-color);
-  }
-}
-.a-test {
-  --my-color: green;
-  @apply(--my-mixin);
-}</code></pre>
+    </li>
+  </ul>
+  <p-notes>The <code>>>></code> operator would defy the purpose of style encapsulation</p-notes>
+  <p-notes>
+    The <code>@apply</code> function needs separate declarations for pseudo-classes/elements and
+    isn't clear about some more complex uses.
+  </p-notes>
 </p-slide>
 <p-slide>
   <h4 class="our-header">CSS Shadow Parts</h4>
@@ -73,18 +48,6 @@
   font: bold 2em system-ui, sans-serif;
 }</code></pre>
     </p-fragment>
-  </div>
-</p-slide>
-<p-slide>
-  <h4>Part forwarding</h4>
-  <div class="self-center">
-    <pre class="language-html"><code>#shadow-root (inner-box)
-  &lt;hr>
-  &lt;section part="inner-content">...&lt;/section>
-  &lt;hr></code></pre>
-    <pre class="language-html"><code>#shadow-root (outer-box)
-  &lt;header part="outer-header">...&lt;/header>
-  &lt;inner-box part="inner-content => outer-content">...&lt;/inner-box></code></pre>
   </div>
 </p-slide>
 <p-slide>
@@ -117,12 +80,15 @@
   <h2 class="center">A new way to apply styles</h2>
 </p-slide>
 <p-slide>
-  <pre class="language-js self-center big"><code>const styles = new CSSStyleSheet();
-styles.replaceSync('div { color: red; }');
+  <pre class="language-js self-center big"><code class="language-js">const styles = new CSSStyleSheet();
+styles.replaceSync('div { color: red; }');</code>
 
-// Or asynchronously, we can use @import
-styles.replace('@import "/foo.css"')
-  .then(sheet => { ... });</code></pre>
+<p-fragment><code class="language-js">styles.replace('@import "/foo.css"')
+  .then(sheet => { ... });</code></p-fragment></pre>
+  <p-notes>
+    <code>.replaceSync</code> isn't really different than creating a <code>&lt;style></code> element
+    and defining <code>textContent</code>, just nicer&hellip; maybe.
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre class="language-js self-center big"><code>import { styles } from './styles.js';
@@ -171,7 +137,7 @@ class MyComponent extends HTMLElement {
 <p-slide>
   <h1 class="center">CSS Modules</h1>
   <p-fragment><h4 class="center">
-    (No, not <em>those</em> <a href="https://github.com/css-modules/css-modules">CSS Modules</a>&hellip;
+    (No, not <em>those</em> <a href="https://github.com/css-modules/css-modules">CSS Modules</a>&hellip;)
   </h4></p-fragment>
 </p-slide>
 <p-slide>
