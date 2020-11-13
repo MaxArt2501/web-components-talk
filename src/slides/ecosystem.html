@@ -1,0 +1,39 @@
+<p-slide>
+  <h2 class="center">A look at the ecosystem</h2>
+</p-slide>
+<p-slide>
+  <h3 class="our-header"><a href="https://lit-element.polymer-project.org/">lit-element</a></h3>
+  <pre class="self-center language-js"><code>@customElement('simple-greeting')
+export class SimpleGreeting extends LitElement {
+  @property() name = 'World';
+
+  render() {
+    return html`<p>Hello, ${this.name}!</p>`;
+  }
+}</code></pre>
+</p-slide>
+<p-slide>
+  <h3 class="our-header"><a href="https://stenciljs.com/">stencil</a></h3>
+  <pre class="self-center language-js"><code>@Component({ tag: 'my-first-component' })
+export class MyComponent {
+  @Prop() name: string;
+
+  render() {
+    return &lt;p>
+      My name is {this.name}
+    &lt;/p>;
+  }
+}</code></pre>
+  <p-notes>SkateJS too uses TSX</p-notes>
+</p-slide>
+<p-slide>
+  <h2 class="center"><a href="https://www.webcomponents.org/">wecomponents.org</a></h2>
+  <p class="center">A good ol' library directory</p>
+  <ul class="self-center">
+    <li>👉 <a href="https://material-components.github.io/material-components-web-components/demos/index.html">
+      Material Web Components
+    </a></li>
+    <li>👉 <a href="https://vaadin.com/components">Vaadin Components</a></li>
+    <li>👉 <a href="https://ionicframework.com/docs/components">Ionic UI Components</a></li>
+  </ul>
+</p-slide>
