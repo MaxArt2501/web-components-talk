@@ -8,11 +8,19 @@ root.attachShadow({ mode: 'open', registry });</code></p-fragment>
 
 <p-fragment><code class="language-js">root.shadowRoot.innerHTML =
   '&lt;daily-question>Tabs or spaces?&lt;/daily-question>';</code></p-fragment></pre>
+  <p-notes>
+    We get to create a new <code>CustomElementRegistry</code>, use it to define our custom elements
+    and attach it to a shadow root.
+  </p-notes>
   <p-notes>Attaching a scoped registry to a Shadow DOM because it provides an encapsulation
-    mechanism mechanism out of the box</p-notes>
+    mechanism out of the box</p-notes>
 </p-slide>
 <p-slide>
   <img style="height: 10em;" src="img/scoped-registries.svg" alt="A chart showing how a custom element inside a shadow root can be resolved in the shadow root's own custom element registry, and then the global registry">
+  <p-notes>
+    Custom elements resolution is of course changed. If a CE is inside a shadow DOM, the browser will
+    check if that has a registry and if the CE is defined there; otherwise, it will check the global registry.
+  </p-notes>
 </p-slide>
 <p-slide class="center">
   <div class="two-columns align-center">
@@ -37,6 +45,10 @@ root.attachShadow({ mode: 'open', registry });</code></p-fragment>
       </aside>
     </div>
   </p-fragment>
+  <p-notes>
+    Now Web Components libraries, instead of definining custom elements on their own on the global
+    registry, can take a registry as a dependency and use it instead.
+  </p-notes>
 </p-slide>
 <p-slide>
   <support-table chrome firefox safari>Scoped Custom Elements Registries</support-table>
