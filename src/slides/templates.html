@@ -3,13 +3,13 @@
 </p-slide>
 <p-slide>
   <p-notes>
-    <ul>
-      <li>Still needs JS</li>
-      <li>Modular, but not ES6 modular</li>
-      <li>Blocking loading</li>
-      <li>Global object pollution</li>
-    </ul>
+    As some of you might remember, when Web Components were initially conceived, they comprised four
+    parts, and one of them was called "HTML Imports". But it suffered from several problems.
   </p-notes>
+  <p-notes>Still needs JS</p-notes>
+  <p-notes>Modular, but not ES6 modular</p-notes>
+  <p-notes>Blocking loading</p-notes>
+  <p-notes>Global object pollution</p-notes>
   <h3 class="our-header">Once upon a time&hellip;</h3>
   <div class="self-center relative">
     <p-fragment>
@@ -202,6 +202,11 @@ const instance =
   });</code></pre>
     </p-fragment>
   </div>
+  <p-notes>
+    It would introduce a Mustache-like syntax for <code>&lt;template></code> elements and a way to
+    replace the placeholders with the data provided. So we wouldn't have to clone the tree, target
+    the nodes and so on.
+  </p-notes>
 </p-slide>
 <p-slide>
   <h1 class="center">
