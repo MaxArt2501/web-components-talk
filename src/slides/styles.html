@@ -12,22 +12,29 @@
     <li><p-fragment>👉 low level API</p-fragment></li>
     <li><p-fragment>👉 FOUCs</p-fragment></li>
   </ul>
+  <p-notes>
+    Style encapsulation is kind of the whole point of Shadow DOM, but it makes it hard to
+    create a coherent look & feel for the application.
+  </p-notes>
 </p-slide>
 <p-slide>
-  <!-- <h3>Rejected proposals</h3> -->
   <ul class="self-center">
     <li>
-      ❌ The <code aria-label="deep operator">>>></code> operator
-      <pre><code class="language-css">my-form.no-btn >>> button {...}</code></pre>
+      <p-fragment>
+        ❌ The <code aria-label="deep operator">>>></code> operator
+        <pre><code class="language-css">my-form.no-btn >>> button {...}</code></pre>
+      </p-fragment>
     </li>
     <li>
-      ❌ The <code>@apply</code> function
-      <pre><code class="language-css">:root {
+      <p-fragment>
+        ❌ The <code>@apply</code> function
+        <pre><code class="language-css">:root {
   --my-mixin: { color: red; }
 }
 :host > div {
   @apply(--my-mixin);
 }</code></pre>
+      </p-fragment>
     </li>
   </ul>
   <p-notes>The <code>>>></code> operator would defy the purpose of style encapsulation</p-notes>
@@ -49,12 +56,21 @@
 }</code></pre>
     </p-fragment>
   </div>
+  <p-notes>
+    The proposal that actually gained traction is called CSS Shadow Parts. With this specifications,
+    elements inside the Shadow DOM may define a <code>part</code> attribute with a name of our choice
+  </p-notes>
+  <p-notes>
+    And that can be used in an <em>external</em> stylesheet to style elements inside the Shadow DOM.
+    And that works with pseudo-classes/elements too.
+  </p-notes>
 </p-slide>
 <p-slide>
   <support-table chrome="73" firefox="72" safari="13.1">Shadow Parts</support-table>
   <a class="center" href="https://developer.mozilla.org/en-US/docs/Web/CSS/::part">
     developer.mozilla.org/en-US/docs/Web/CSS/::part
   </a>
+  <p-notes>But what about styling WC from the <em>inside</em>, instead? The problem here is that&hellip;</p-notes>
 </p-slide>
 <p-slide>
   <h1 class="center">&ldquo;Loading .css files is a pain!&rdquo;</h1>
@@ -83,12 +99,17 @@
   <pre class="language-js self-center big"><code class="language-js">const styles = new CSSStyleSheet();
 styles.replaceSync('div { color: red; }');</code>
 
-<p-fragment><code class="language-js">styles.replace('@import "/foo.css"')
+<p-fragment><code class="language-js">styles.replace('div { color: red; }')
   .then(sheet => { ... });</code></p-fragment></pre>
   <p-notes>
     <code>.replaceSync</code> isn't really different than creating a <code>&lt;style></code> element
     and defining <code>textContent</code>, just nicer&hellip; maybe.
   </p-notes>
+  <p-notes>
+    On the other hand, <code>.replace</code> returns a promise that resolves when the stylesheet is fully
+    loaded, so we have more control over it.
+  </p-notes>
+  <p-notes>But what can we do with these <code>CSSStyleSheet</code> objects? Let's see.</p-notes>
 </p-slide>
 <p-slide>
   <pre class="language-js self-center big"><code>import { styles } from './styles.js';
@@ -99,6 +120,14 @@ class MyComponent extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [ styles ];
   }
 }</code></pre>
+  <p-notes>
+    We define this <code>.adoptedStyleSheets</code> property of the <code>.shadowRoot</code> as an array
+    containing our styles, and we're done: our Web Component is now styled.
+  </p-notes>
+  <p-notes>
+    The main point here is that these stylesheets can now be <em>shared</em> among Web Components
+    and their instances. No need to reload, no need to re-parse.
+  </p-notes>
 </p-slide>
 <p-slide>
   <h4 class="our-header">&hellip;The heck is <code>.adoptedStyleSheets</code>?</h4>
@@ -127,6 +156,11 @@ class MyComponent extends HTMLElement {
       </p-fragment>
     </div>
   </div>
+  <p-notes>
+    This is pretty unusual for DOM API, as we're used to deal with methods like <code>add</code> or
+    <code>define</code>, <code>push</code> or whatever to add new "things" to collections, while we're
+    just creating new plain arrays. But it works&hellip;
+  </p-notes>
 </p-slide>
 <p-slide>
   <support-table chrome="73" firefox="" safari="">Constructable Stylesheets</support-table>
@@ -139,6 +173,7 @@ class MyComponent extends HTMLElement {
   <p-fragment><h4 class="center">
     (No, not <em>those</em> <a href="https://github.com/css-modules/css-modules">CSS Modules</a>&hellip;)
   </h4></p-fragment>
+  <p-notes>Not CSS Modules that's being used as the default CSS-in-JS library by create-react-app</p-notes>
 </p-slide>
 <p-slide>
   <h3 class="our-header"><em>These</em> CSS Modules&hellip;</h3>
@@ -148,6 +183,11 @@ class MyComponent extends HTMLElement {
   <p-fragment>
     <p class="center"><code>sheet</code> is a <code>CSSStyleSheet</code></p>
   </p-fragment>
+  <p-notes>
+    Now, again, this <em>looks</em> like using the <em>library</em> CSS Modules, where webpack with its
+    loader transforms the import in actual JavaScript, but this will actually be JavaScript! (And I
+    honestly don't know how this will be handled by the mentioned library.)
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre class="language-js self-center big"><code>import sheet from './styles.css';
@@ -158,6 +198,7 @@ class MyComponent extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [ sheet ];
   }
 }</code></pre>
+  <p-notes>Now <em>this</em> looks an easy way to load styles for Web Components!</p-notes>
 </p-slide>
 <p-slide>
   <support-table chrome="" firefox="" safari="">CSS Modules</support-table>
