@@ -218,7 +218,7 @@ element.ariaLive = 'polite';</code>
     and that's good because those attributes could be removed or changed from outside. Instead, we can
     define an <code>ElementInternals</code> object with this new method <code>.attachInternals</code>.
     This allows us to define accessible semantics <em>internally</em>, so they can't be touched externally.
-    And it get better.
+    And it gets better.
   </p-notes>
 </p-slide>
 <p-slide>
@@ -233,7 +233,8 @@ element.ariaDescribedByElements = [
   </p-notes>
   <p-notes>
     And we can also do the opposite: define the properties ending with <code>Element(s)</code> to
-    get the same result. Let's see why it's so important for Web Components</p-notes>
+    get the same result, <em>whether or not they have an id</em>. Let's see why it's so important
+    for Web Components</p-notes>
 </p-slide>
 <p-slide>
   <div class="self-center">
@@ -250,8 +251,9 @@ element.ariaDescribedByElements = [
 <p-fragment><svg class="cross covering" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M1,1L19,19M1,19L19,1"/></svg></p-fragment>
   </div>
   <p-notes>
-    Dealing with just attributes, not only we'd have the elements in the Shadow DOM with hard-coded id's,
-    but they actually <em>cannot</em> point to elements in the "light" DOM. So this doesn't work.
+    If we only had attributes to define accessible semantics, not only we'd have the elements
+    in the Shadow DOM with hard-coded id's, but they actually <em>cannot</em> point to elements
+    in the "light" DOM. So this doesn't work.
   </p-notes>
 </p-slide>
 <p-slide>

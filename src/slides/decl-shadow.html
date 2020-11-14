@@ -1,5 +1,11 @@
 <p-slide>
   <img class="full-media" src="img/wait-its-all-js.webp" alt="Meme of the two astronauts, looking at some JS code, the first saying 'Wait, it's all JavaScript?', the other replying 'Always has been'">
+  <p-notes>
+    Web Components have always heavily relied on JavaScript. And that's a problem,
+    because they're quite opaque to search engines and social media sharing,
+    as they might not execute the JavaScript bits to hydrate the laconic tags that
+    we put in the markup. So here it comes a new proposal&hellip;
+  </p-notes>
 </p-slide>
 <p-slide>
   <h2 class="our-header">Declarative Shadow DOM</h2>
@@ -12,6 +18,11 @@
   &lt;p>Is the cat inside?&lt;/p>
 &lt;/daily-question></code></pre>
   </p-fragment>
+  <p-notes>
+    All we have to do is to define the content of the WC using the good ol' <code>&lt;template></code>
+    element with this new <code>shadowroot</code> attribute, that takes "open" or "closed" as
+    values like the possible modes of <code>.attachShadow</code>. So this could be done by a server!
+  </p-notes>
 </p-slide>
 <p-slide>
   <pre class="self-center"><code class="language-js">class DailyQuestion extends HTMLElement {
@@ -27,6 +38,10 @@
   }
   ...
 }</code></pre>
+  <p-notes>
+    Now when the class gets instantiated, it might already have a shadow root defined by the DSD,
+    so we'd have to check its presence.
+  </p-notes>
   <p-notes>
     This is also retro-compatible, meaning that re-declaring a shadow root
     with <code>.attachShadow()</code> will just remove the one created by
@@ -45,7 +60,7 @@
   <p-notes>
     DSD also makes it easy (again) to load stylesheets for Web Components. All you need to do is to
     insert a <code>&lt;link></code> element inside the template, as we used to do with JavaScript.
-    The stylesheet get cached too, so it won't be loaded again for all the other instances of the same
+    The stylesheet gets cached too, so it won't be loaded again for all the other instances of the same
     component.
   </p-notes>
 </p-slide>
