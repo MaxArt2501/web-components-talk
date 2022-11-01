@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "p-slides": "^0.2.0",
-    "prismjs": "^1.25.0"
+    "prismjs": "^1.27.0"
   },
   "devDependencies": {
     "browser-sync": "^2.27.10",
